@@ -753,11 +753,13 @@ public class VkCommandEncoder implements CommandEncoder {
     }
 
     public boolean trySetup(VkRenderPass renderPass) {
-        if (VkRenderPass.VALIDATION) {
-            if (renderPass.pipeline == null) {
-                throw new IllegalStateException("Can't draw without a render pipeline");
-            }
+        // 🔧 FIX: Null guard para Android ARM64 - pipeline pode ser null em alguns casos
+        if (renderPass == null || renderPass.pipeline == null) {
+            LOGGER.warn("VkCommandEncoder.trySetup(): renderPass or pipeline is null - Android fallback activated");
+            return false;
+        }
 
+        if (VkRenderPass.VALIDATION) {
             for (RenderPipeline.UniformDescription uniformDescription : renderPass.pipeline.getUniforms()) {
                 Object object = renderPass.uniforms.get(uniformDescription.name());
                 if (object == null && !GlProgram.BUILT_IN_UNIFORMS.contains(uniformDescription.name())) {
@@ -783,9 +785,21 @@ public class VkCommandEncoder implements CommandEncoder {
     }
 
     public void setupUniforms(VkRenderPass renderPass) {
+        // 🔧 FIX: Null guard para Android ARM64
+        if (renderPass == null || renderPass.pipeline == null) {
+            LOGGER.warn("VkCommandEncoder.setupUniforms(): renderPass or pipeline is null - skipping uniform setup");
+            return;
+        }
+
         RenderPipeline renderPipeline = renderPass.pipeline;
         EGlProgram glProgram = ExtendedRenderPipeline.of(renderPass.pipeline).getProgram();
         Pipeline pipeline = ExtendedRenderPipeline.of(renderPass.pipeline).getPipeline();
+
+        // 🔧 FIX: Null guard para pipeline (pode ser null em Android)
+        if (pipeline == null) {
+            LOGGER.warn("VkCommandEncoder.setupUniforms(): pipeline is null - skipping buffer setup");
+            return;
+        }
 
         for (UBO ubo : pipeline.getBuffers()) {
             String uniformName = ubo.name;
