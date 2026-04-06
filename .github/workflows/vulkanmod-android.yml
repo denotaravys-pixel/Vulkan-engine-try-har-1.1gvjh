@@ -32,17 +32,13 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Pré-compilar shaders Android
-        run: ./gradlew compileAndroidShaders
       - name: Build JAR
         run: ./gradlew build
       - name: Upload JAR Android
         uses: actions/upload-artifact@v4
         with:
           name: VulkanMod-Android-${{ github.sha }}
-          path: |
-            build/libs/VulkanMod*.jar
-            src/main/resources/assets/vulkanmod/shaders/*.spv
+          path: build/libs/VulkanMod*.jar
       - name: Create Release (on tag)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
