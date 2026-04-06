@@ -30,9 +30,7 @@ public abstract class PipelineManager {
 
     public static void init() {
         setTerrainVertexFormat(CustomVertexFormat.COMPRESSED_TERRAIN);
-        if (!Platform.isAndroid()) {
-            createBasicPipelines();
-        }
+        createBasicPipelines();
         setDefaultShader();
         ThreadBuilderPack.defaultTerrainBuilderConstructor();
     }

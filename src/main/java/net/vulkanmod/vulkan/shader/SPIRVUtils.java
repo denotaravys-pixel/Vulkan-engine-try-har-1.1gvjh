@@ -17,6 +17,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 import static org.lwjgl.system.MemoryUtil.NULL;
 import static org.lwjgl.system.MemoryUtil.memASCII;
@@ -112,10 +113,52 @@ public class SPIRVUtils {
         // Returns pre-compiled bytecode from package resources.
         if (Platform.isAndroid()) {
             String baseName = filename.replace(".vsh", "").replace(".fsh", "");
-            String spvPath = "/assets/vulkanmod/shaders/" + baseName + 
-                            (shaderKind == ShaderKind.VERTEX_SHADER ? ".vert.spv" : ".frag.spv");
-            
-            return loadPrecompiledSPV(spvPath);
+            String ext = shaderKind == ShaderKind.VERTEX_SHADER ? ".vert.spv" : ".frag.spv";
+
+            // Tentar todos os caminhos possíveis onde os .spv podem estar
+            String[] candidates = {
+                "/assets/vulkanmod/shaders/basic/" + baseName + "/" + baseName + ext,
+                "/assets/vulkanmod/shaders/core/" + baseName + "/" + baseName + ext,
+                "/assets/vulkanmod/shaders/post/blit/" + baseName + ext,
+                "/assets/vulkanmod/shaders/" + baseName + "/" + baseName + ext,
+                "/assets/vulkanmod/shaders/basic/" + baseName + ext,
+                "/assets/vulkanmod/shaders/" + baseName + ext,
+            };
+
+            for (String spvPath : candidates) {
+                try (var is = SPIRVUtils.class.getResourceAsStream(spvPath)) {
+                    if (is == null) continue;
+
+                    byte[] bytes = is.readAllBytes();
+
+                    // Validar magic SPIR-V: 0x07230203 (little-endian)
+                    if (bytes.length < 20) continue; // menor que header mínimo
+
+                    int magic = (bytes[0] & 0xFF)
+                      | ((bytes[1] & 0xFF) << 8)
+                      | ((bytes[2] & 0xFF) << 16)
+                      | ((bytes[3] & 0xFF) << 24);
+                    if (magic != 0x07230203) continue;
+
+                    // Verificar que tem instruções reais (não é placeholder de 20 bytes)
+                    if (bytes.length < 1000) {
+                        // Log de aviso mas tentar usar mesmo assim
+                        // (pode ser um shader muito simples)
+                    }
+
+                    ByteBuffer bytecode = MemoryUtil.memAlloc(bytes.length);
+                    bytecode.put(bytes).flip();
+                    return new SPIRV(0L, bytecode);
+
+                } catch (IOException e) {
+                    // tentar próximo candidato
+                }
+            }
+
+            throw new RuntimeException(
+                "[AndroidFix] SPV nao encontrado para shader: " + filename + " tipo=" + shaderKind
+                + ". Candidatos tentados: " + java.util.Arrays.toString(candidates)
+            );
         }
 
         if (source == null) {

@@ -93,22 +93,15 @@ public class ShaderPrecompiler {
     }
     
     /**
-     * Creates a placeholder SPIR-V file for testing.
-     * In production, this should use the actual shaderc compilation result.
+     * REMOVIDO: createPlaceholderSPV gerava ficheiros inválidos.
+     * Os shaders devem ser compilados com glslc --target-env=vulkan1.1
+     * NUNCA usar este método. O ShaderPrecompiler.java é apenas referência histórica.
      */
+    @Deprecated
     private static byte[] createPlaceholderSPV(String source) {
-        // SPIR-V magic number (little-endian): 0x07230203
-        byte[] magic = new byte[] { 0x03, 0x02, 0x23, 0x07 };
-        
-        // Create a minimal valid SPIR-V module
-        // Format: magic (4 bytes) + version (4 bytes) + generator (4 bytes) + bound (4 bytes) + schema (4 bytes)
-        ByteBuffer buffer = ByteBuffer.allocate(20);
-        buffer.put(magic);
-        buffer.putInt(0x00010000);  // version 1.0
-        buffer.putInt(0);            // generator
-        buffer.putInt(1);            // bound
-        buffer.putInt(0);            // schema
-        
-        return buffer.array();
+        throw new UnsupportedOperationException(
+            "ERRO: createPlaceholderSPV foi removido. " +
+            "Compilar shaders com: glslc --target-env=vulkan1.1 -fshader-stage=vertex INPUT.vsh -o OUTPUT.vert.spv"
+        );
     }
 }
