@@ -1,14 +1,16 @@
-#version 150
+#version 450
 
-in vec4 Position;
+layout(std140, binding = 0) uniform UBO {
+    mat4 ProjMat;
+    vec2 OutSize;
+} ubo;
 
-uniform mat4 ProjMat;
-uniform vec2 OutSize;
+layout(location = 0) in vec4 Position;
 
-out vec2 texCoord;
+layout(location = 0) out vec2 texCoord;
 
 void main(){
-    vec4 outPos = ProjMat * vec4(Position.xy * OutSize, 0.0, 1.0);
+    vec4 outPos = ubo.ProjMat * vec4(Position.xy * ubo.OutSize, 0.0, 1.0);
     gl_Position = vec4(outPos.xy, 0.2, 1.0);
 
     texCoord = vec2(Position.x, 1.0 - Position.y);

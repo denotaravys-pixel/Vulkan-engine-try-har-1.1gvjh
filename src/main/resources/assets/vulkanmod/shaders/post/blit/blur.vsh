@@ -1,21 +1,23 @@
-#version 150
+#version 450
 
-in vec4 Position;
+layout(std140, binding = 0) uniform UBO {
+    mat4 ProjMat;
+    vec2 InSize;
+    vec2 OutSize;
+    vec2 BlurDir;
+} ubo;
 
-uniform mat4 ProjMat;
-uniform vec2 InSize;
-uniform vec2 OutSize;
-uniform vec2 BlurDir;
+layout(location = 0) in vec4 Position;
 
-out vec2 texCoord;
-out vec2 sampleStep;
+layout(location = 0) out vec2 texCoord;
+layout(location = 1) out vec2 sampleStep;
 
 void main() {
-    vec4 outPos = ProjMat * vec4(Position.xy * OutSize, 0.0, 1.0);
+    vec4 outPos = ubo.ProjMat * vec4(Position.xy * ubo.OutSize, 0.0, 1.0);
     gl_Position = vec4(outPos.xy, 0.2, 1.0);
 
-    vec2 oneTexel = 1.0 / InSize;
-    sampleStep = oneTexel * BlurDir;
+    vec2 oneTexel = 1.0 / ubo.InSize;
+    sampleStep = oneTexel * ubo.BlurDir;
 
     texCoord = vec2(Position.x, 1.0 - Position.y);
 }

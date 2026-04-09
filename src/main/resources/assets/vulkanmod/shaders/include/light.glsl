@@ -4,12 +4,12 @@ const float MINECRAFT_LIGHT_POWER = (0.6);
 const float MINECRAFT_AMBIENT_LIGHT = (0.4);
 
 vec4 minecraft_sample_lightmap(sampler2D lightMap, ivec2 uv) {
-    return texelFetch(lightMap, bitfieldExtract(uv, 4, 8), 0);
+    return texelFetch(lightMap, ivec2(bitfieldExtract(uv.x, 4, 8), bitfieldExtract(uv.y, 4, 8)), 0);
     //return texture(lightMap, clamp(uv / 256.0, vec2(0.5 / 16.0), vec2(15.5 / 16.0)));
 }
 
 vec4 sample_lightmap(sampler2D lightMap, ivec2 uv) {
-    return texelFetch(lightMap, bitfieldExtract(uv, 4, 8), 0);
+    return texelFetch(lightMap, ivec2(bitfieldExtract(uv.x, 4, 8), bitfieldExtract(uv.y, 4, 8)), 0);
 }
 
 vec4 sample_lightmap2(sampler2D lightMap, uint uv) {

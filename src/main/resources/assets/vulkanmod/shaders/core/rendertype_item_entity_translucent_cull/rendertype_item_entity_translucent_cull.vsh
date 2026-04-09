@@ -1,13 +1,14 @@
-#version 330
+#version 450
+#extension GL_GOOGLE_include_directive : require
 
 #include "light.glsl"
 
-layout(std140) uniform Lighting {
+layout(std140, binding = 0) uniform Lighting {
 vec3 Light0_Direction;
 vec3 Light1_Direction;
 };
 
-layout(std140) uniform Fog {
+layout(std140, binding = 1) uniform Fog {
     vec4 FogColor;
     float FogEnvironmentalStart;
     float FogEnvironmentalEnd;
@@ -46,7 +47,7 @@ float fog_cylindrical_distance(vec3 pos) {
     return max(distXZ, distY);
 }
 
-layout(std140) uniform DynamicTransforms {
+layout(std140, binding = 2) uniform DynamicTransforms {
     mat4 ModelViewMat;
     vec4 ColorModulator;
     vec3 ModelOffset;
@@ -54,7 +55,7 @@ layout(std140) uniform DynamicTransforms {
     float LineWidth;
 };
 
-layout(std140) uniform Projection {
+layout(std140, binding = 3) uniform Projection {
     mat4 ProjMat;
 };
 
@@ -65,21 +66,21 @@ vec4 projection_from_position(vec4 position) {
     return projection;
 }
 
-in vec3 Position;
-in vec4 Color;
-in vec2 UV0;
-in ivec2 UV1;
-in ivec2 UV2;
-in vec3 Normal;
+layout(location = 0) in vec3 Position;
+layout(location = 1) in vec4 Color;
+layout(location = 2) in vec2 UV0;
+layout(location = 3) in ivec2 UV1;
+layout(location = 4) in ivec2 UV2;
+layout(location = 5) in vec3 Normal;
 
-uniform sampler2D Sampler2;
+layout(binding = 4) uniform sampler2D Sampler2;
 
-out float sphericalVertexDistance;
-out float cylindricalVertexDistance;
-out vec4 vertexColor;
-out vec2 texCoord0;
-out vec2 texCoord1;
-out vec2 texCoord2;
+layout(location = 0) out float sphericalVertexDistance;
+layout(location = 1) out float cylindricalVertexDistance;
+layout(location = 2) out vec4 vertexColor;
+layout(location = 3) out vec2 texCoord0;
+layout(location = 4) out vec2 texCoord1;
+layout(location = 5) out vec2 texCoord2;
 
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
