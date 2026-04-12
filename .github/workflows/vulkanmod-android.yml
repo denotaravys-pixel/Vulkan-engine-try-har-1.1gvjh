@@ -30,8 +30,8 @@ jobs:
       - name: Install shader tools
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y glslang-tools spirv-tools spirv-cross
-          glslc --version
+          sudo apt-get install -y glslang-tools spirv-tools
+          glslangValidator --version
           spirv-val --version
 
       - name: Compile shaders (GLSL → SPIR-V 1.1)
@@ -42,19 +42,21 @@ jobs:
           for f in shaders/src/*.vert shaders/src/*.vsh; do
             [ -f "$f" ] || continue
             name=$(basename "${f%.*}")
-            glslc -fshader-stage=vertex --target-env=vulkan1.1 -O \
-              "$f" -o "$OUT/${name}.vsh.spv" || FAIL=1
+            glslangValidator -V --target-env vulkan1.1 \
+              -S vert "$f" \
+              -o "$OUT/${name}.vsh.spv" || FAIL=1
           done
           for f in shaders/src/*.frag shaders/src/*.fsh; do
             [ -f "$f" ] || continue
             name=$(basename "${f%.*}")
-            glslc -fshader-stage=fragment --target-env=vulkan1.1 -O \
-              "$f" -o "$OUT/${name}.fsh.spv" || FAIL=1
+            glslangValidator -V --target-env vulkan1.1 \
+              -S frag "$f" \
+              -o "$OUT/${name}.fsh.spv" || FAIL=1
           done
           for spv in "$OUT"/*.spv; do
             [ -f "$spv" ] || continue
             spirv-val --target-env vulkan1.1 "$spv" \
-              && echo "✅ VALID: $spv" || echo "❌ INVALID: $spv" && FAIL=1
+              && echo "VALID: $spv" || { echo "INVALID: $spv"; FAIL=1; }
           done
           exit $FAIL
 
