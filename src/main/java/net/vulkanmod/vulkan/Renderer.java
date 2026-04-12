@@ -184,9 +184,10 @@ public class Renderer {
     }
 
     private void createSyncObjects() {
+        System.err.println("[VULKANMOD] createSyncObjects called framesNum=" + framesNum);
         imageAvailableSemaphores = new ArrayList<>(framesNum);
         renderFinishedSemaphores = new ArrayList<>(framesNum);
-        // Remove inFlightFences - using timeline semaphore instead
+        inFlightFences = null; // frame pacing via TimelineSemaphoreManager, not per-frame fences
 
         try (MemoryStack stack = stackPush()) {
 
@@ -264,7 +265,8 @@ public class Renderer {
         p.pop();
         p.push("Frame_fence");
 
-        vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+        // Frame pacing: handled by TimelineSemaphoreManager in waitFences()
+        // (inFlightFences removed — timeline semaphore replaces per-frame fences)
 
         p.pop();
         p.push("Begin_rendering");
@@ -384,7 +386,6 @@ public class Renderer {
             submitInfo.pNext(timelineSubmitInfo);
             submitInfo.pCommandBuffers(stack.pointers(currentCmdBuffer));
 
-            vkResetFences(device, inFlightFences.get(currentFrame));
             if ((vkResult = vkQueueSubmit(DeviceManager.getGraphicsQueue().vkQueue(), submitInfo,
                     VK_NULL_HANDLE)) != VK_SUCCESS) {
                 throw new RuntimeException(
@@ -447,15 +448,13 @@ public class Renderer {
             submitUploads();
             waitFences();
 
-            vkResetFences(device, inFlightFences.get(currentFrame));
-
             if ((vkResult = vkQueueSubmit(DeviceManager.getGraphicsQueue().vkQueue(), submitInfo,
                     VK_NULL_HANDLE)) != VK_SUCCESS) {
                 throw new RuntimeException(
                         "Failed to submit flush command buffer: %s".formatted(VkResult.decode(vkResult)));
             }
 
-            vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+            vkQueueWaitIdle(DeviceManager.getGraphicsQueue().vkQueue());
 
             this.beginMainRenderPass(stack);
         }
@@ -555,19 +554,15 @@ public class Renderer {
     }
 
     void waitForSwapChain() {
-        vkResetFences(device, inFlightFences.get(currentFrame));
-
-        // constexpr VkPipelineStageFlags
-        // t=VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
         try (MemoryStack stack = MemoryStack.stackPush()) {
-            // Empty Submit
+            // Empty Submit — consumes the imageAvailableSemaphore so it is not left signalled
             VkSubmitInfo info = VkSubmitInfo.calloc(stack)
                     .sType$Default()
                     .pWaitSemaphores(stack.longs(imageAvailableSemaphores.get(currentFrame)))
                     .pWaitDstStageMask(stack.ints(VK_PIPELINE_STAGE_ALL_COMMANDS_BIT));
 
-            vkQueueSubmit(DeviceManager.getGraphicsQueue().vkQueue(), info, inFlightFences.get(currentFrame));
-            vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+            vkQueueSubmit(DeviceManager.getGraphicsQueue().vkQueue(), info, VK_NULL_HANDLE);
+            vkQueueWaitIdle(DeviceManager.getGraphicsQueue().vkQueue());
         }
         mainCommandBuffers.forEach(commandBuffer -> vkResetCommandBuffer(commandBuffer, 0));
         recordingCmds = false;
@@ -616,10 +611,10 @@ public class Renderer {
 
     private void destroySyncObjects() {
         for (int i = 0; i < framesNum; ++i) {
-            vkDestroyFence(device, inFlightFences.get(i), null);
             vkDestroySemaphore(device, imageAvailableSemaphores.get(i), null);
             vkDestroySemaphore(device, renderFinishedSemaphores.get(i), null);
         }
+        inFlightFences = null;
     }
 
     public void addOnResizeCallback(Runnable runnable) {
