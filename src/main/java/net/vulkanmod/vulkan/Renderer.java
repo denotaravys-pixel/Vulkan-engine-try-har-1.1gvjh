@@ -27,10 +27,12 @@ import net.vulkanmod.vulkan.shader.Uniforms;
 import net.vulkanmod.vulkan.shader.layout.PushConstants;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
 import net.vulkanmod.vulkan.sync.TimelineSemaphoreManager;
+import net.vulkanmod.vulkan.util.VUtil;
 import net.vulkanmod.vulkan.util.VkResult;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
+import org.lwjgl.vulkan.VkTimelineSemaphoreSubmitInfo;
 import org.lwjgl.vulkan.*;
 
 import java.nio.ByteBuffer;
@@ -233,7 +235,7 @@ public class Renderer {
 
     public void beginFrame() {
         if (swapChainUpdate) {
-            recreateSwapChain();
+            swapChain.recreate();
             swapChainUpdate = false;
 
             if (getSwapChain().getWidth() == 0 && getSwapChain().getHeight() == 0) {
@@ -375,7 +377,11 @@ public class Renderer {
             submitInfo.pSignalSemaphores(stack.longs(
                     renderFinishedSemaphores.get(currentFrame),
                     TimelineSemaphoreManager.getTimelineSemaphore()));
-            submitInfo.pSignalSemaphoreValues(stack.longs(0, TimelineSemaphoreManager.getNextValue()));
+
+            VkTimelineSemaphoreSubmitInfo timelineSubmitInfo = VkTimelineSemaphoreSubmitInfo.calloc(stack)
+                    .sType(VK12.VK_STRUCTURE_TYPE_TIMELINE_SEMAPHORE_SUBMIT_INFO)
+                    .pSignalSemaphoreValues(stack.longs(0, TimelineSemaphoreManager.getNextValue()));
+            submitInfo.pNext(timelineSubmitInfo);
             submitInfo.pCommandBuffers(stack.pointers(currentCmdBuffer));
 
             vkResetFences(device, inFlightFences.get(currentFrame));

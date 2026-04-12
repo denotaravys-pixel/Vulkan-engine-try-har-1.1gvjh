@@ -19,7 +19,7 @@ public class PersistentMappedBuffer extends Buffer {
     public PersistentMappedBuffer(long size, int usage) {
         // Buffer(int usage, MemoryType type) — ordem correcta
         super(usage | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-              MemoryTypes.HostCoherentMemory);
+                MemoryTypes.HOST_MEM);
 
         // Criar o buffer com o tamanho especificado
         this.createBuffer(size);

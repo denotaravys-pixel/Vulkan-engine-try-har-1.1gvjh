@@ -16,7 +16,8 @@ public class GPUMipmapGenerator {
 
     // FIX: parâmetro mudado de long para VkCommandBuffer
     public static void generateMipmaps(VkCommandBuffer commandBuffer, VulkanImage image) {
-        if (image.getMipLevels() <= 1) return;
+        if (image.mipLevels <= 1)
+            return;
 
         try (MemoryStack stack = stackPush()) {
             VkImageMemoryBarrier.Buffer barrierBuf = VkImageMemoryBarrier.calloc(1, stack);
@@ -42,10 +43,10 @@ public class GPUMipmapGenerator {
             blit.dstSubresource().baseArrayLayer(0);
             blit.dstSubresource().layerCount(1);
 
-            int mipWidth  = image.getWidth();
-            int mipHeight = image.getHeight();
+            int mipWidth = image.width;
+            int mipHeight = image.height;
 
-            for (int i = 1; i < image.getMipLevels(); i++) {
+            for (int i = 1; i < image.mipLevels; i++) {
                 // Transition mip i-1: TRANSFER_DST → TRANSFER_SRC
                 barrier.subresourceRange().baseMipLevel(i - 1);
                 barrier.oldLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
@@ -55,22 +56,22 @@ public class GPUMipmapGenerator {
 
                 // FIX: commandBuffer agora é VkCommandBuffer — compila correctamente
                 vkCmdPipelineBarrier(commandBuffer,
-                    VK_PIPELINE_STAGE_TRANSFER_BIT,
-                    VK_PIPELINE_STAGE_TRANSFER_BIT,
-                    0, null, null, barrierBuf);
+                        VK_PIPELINE_STAGE_TRANSFER_BIT,
+                        VK_PIPELINE_STAGE_TRANSFER_BIT,
+                        0, null, null, barrierBuf);
 
                 // Setup blit source e destination
                 blit.srcOffsets(1).set(mipWidth, mipHeight, 1);
                 blit.dstOffsets(1).set(
-                    Math.max(mipWidth  / 2, 1),
-                    Math.max(mipHeight / 2, 1),
-                    1);
+                        Math.max(mipWidth / 2, 1),
+                        Math.max(mipHeight / 2, 1),
+                        1);
                 blit.dstSubresource().mipLevel(i);
 
                 vkCmdBlitImage(commandBuffer,
-                    image.getId(), VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                    image.getId(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-                    blitBuf, VK_FILTER_LINEAR);
+                        image.getId(), VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                        image.getId(), VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                        blitBuf, VK_FILTER_LINEAR);
 
                 // Transition mip i-1: TRANSFER_SRC → SHADER_READ_ONLY
                 barrier.oldLayout(VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL);
@@ -79,25 +80,25 @@ public class GPUMipmapGenerator {
                 barrier.dstAccessMask(VK_ACCESS_SHADER_READ_BIT);
 
                 vkCmdPipelineBarrier(commandBuffer,
-                    VK_PIPELINE_STAGE_TRANSFER_BIT,
-                    VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
-                    0, null, null, barrierBuf);
+                        VK_PIPELINE_STAGE_TRANSFER_BIT,
+                        VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+                        0, null, null, barrierBuf);
 
-                mipWidth  = Math.max(mipWidth  / 2, 1);
+                mipWidth = Math.max(mipWidth / 2, 1);
                 mipHeight = Math.max(mipHeight / 2, 1);
             }
 
             // Transition último mip: TRANSFER_DST → SHADER_READ_ONLY
-            barrier.subresourceRange().baseMipLevel(image.getMipLevels() - 1);
+            barrier.subresourceRange().baseMipLevel(image.mipLevels - 1);
             barrier.oldLayout(VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
             barrier.newLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
             barrier.srcAccessMask(VK_ACCESS_TRANSFER_WRITE_BIT);
             barrier.dstAccessMask(VK_ACCESS_SHADER_READ_BIT);
 
             vkCmdPipelineBarrier(commandBuffer,
-                VK_PIPELINE_STAGE_TRANSFER_BIT,
-                VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
-                0, null, null, barrierBuf);
+                    VK_PIPELINE_STAGE_TRANSFER_BIT,
+                    VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+                    0, null, null, barrierBuf);
         }
     }
 }

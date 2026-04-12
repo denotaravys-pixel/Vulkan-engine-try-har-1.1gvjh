@@ -12,8 +12,8 @@ import static org.lwjgl.vulkan.VK10.*;
 // Buffer construtor: Buffer(int usage, MemoryType type)
 public class ComputeLighting {
 
-    private static long aoBuffer       = 0;
-    private static long fogBuffer      = 0;
+    private static long aoBuffer = 0;
+    private static long fogBuffer = 0;
     private static long skyColorBuffer = 0;
 
     private static Pipeline aoPipeline;
@@ -40,9 +40,8 @@ public class ComputeLighting {
         // FIX: construtor correcto Buffer(int usage, MemoryType type)
         // Depois chamar createBuffer(size) separadamente
         Buffer buffer = new Buffer(
-            VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-            MemoryTypes.GpuOnly
-        );
+                VK_BUFFER_USAGE_STORAGE_BUFFER_BIT | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+                MemoryTypes.GPU_MEM);
         buffer.createBuffer(size);
 
         MemoryManager.getInstance().addBuffer(buffer);
@@ -56,18 +55,21 @@ public class ComputeLighting {
     }
 
     public static void computeAmbientOcclusion(int chunkX, int chunkY, int chunkZ) {
-        if (aoPipeline == null) return;
+        if (aoPipeline == null)
+            return;
         // Dispatch: (16/8, 16/8, 16/8) = (2,2,2) workgroups
         // Cada thread processa 8x8x8 blocos
     }
 
     public static void computeFog(float playerX, float playerY, float playerZ) {
-        if (fogPipeline == null) return;
+        if (fogPipeline == null)
+            return;
         // Compute fog density para chunks visíveis
     }
 
     public static void computeSkyColor(float sunAngle) {
-        if (skyPipeline == null) return;
+        if (skyPipeline == null)
+            return;
         // Compute sky gradient colors
     }
 

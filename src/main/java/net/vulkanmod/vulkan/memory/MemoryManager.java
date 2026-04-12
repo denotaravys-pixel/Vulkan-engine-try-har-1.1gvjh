@@ -48,7 +48,9 @@ public class MemoryManager {
 
     private ObjectArrayList<StackTraceElement[]>[] stackTraces;
 
-    public static MemoryManager getInstance() { return INSTANCE; }
+    public static MemoryManager getInstance() {
+        return INSTANCE;
+    }
 
     public static void createInstance(int frames) {
         Frames = frames;
@@ -101,25 +103,26 @@ public class MemoryManager {
     // ─── Alocação manual Vulkan 1.1 (substitui VMA) ───────────────────────────
 
     private int findMemoryType(int typeFilter, int properties) {
-    VkPhysicalDeviceMemoryProperties memProperties = DeviceManager.memoryProperties;
-    for (int i = 0; i < memProperties.memoryTypeCount(); i++) {
-        int flags = memProperties.memoryTypes(i).propertyFlags();
-        if ((typeFilter & (1 << i)) != 0 && (flags & properties) == properties) {
-            return i;
+        VkPhysicalDeviceMemoryProperties memProperties = DeviceManager.memoryProperties;
+        for (int i = 0; i < memProperties.memoryTypeCount(); i++) {
+            int flags = memProperties.memoryTypes(i).propertyFlags();
+            if ((typeFilter & (1 << i)) != 0 && (flags & properties) == properties) {
+                return i;
+            }
         }
-    }
-    // Fallback — tenta sem o filtro de tipo
-    for (int i = 0; i < memProperties.memoryTypeCount(); i++) {
-        int flags = memProperties.memoryTypes(i).propertyFlags();
-        if ((flags & properties) == properties) {
-            return i;
+        // Fallback — tenta sem o filtro de tipo
+        for (int i = 0; i < memProperties.memoryTypeCount(); i++) {
+            int flags = memProperties.memoryTypes(i).propertyFlags();
+            if ((flags & properties) == properties) {
+                return i;
+            }
         }
-    }
-    throw new RuntimeException("Failed to find suitable memory type. Filter: " + typeFilter + " Properties: " + properties);
+        throw new RuntimeException(
+                "Failed to find suitable memory type. Filter: " + typeFilter + " Properties: " + properties);
     }
 
     public void createBuffer(long size, int usage, int properties,
-                             LongBuffer pBuffer, PointerBuffer pBufferMemory) {
+            LongBuffer pBuffer, PointerBuffer pBufferMemory) {
         try (MemoryStack stack = stackPush()) {
             // 1. Criar o buffer
             VkBufferCreateInfo bufferInfo = VkBufferCreateInfo.calloc(stack);
@@ -178,10 +181,14 @@ public class MemoryManager {
         }
     }
 
+    public synchronized void addBuffer(Buffer buffer) {
+        buffers.put(buffer.getId(), buffer);
+    }
+
     public void createImage(int width, int height, int arrayLayers, int mipLevels,
-                            int format, int tiling, int usage, int flags,
-                            int memProperties,
-                            LongBuffer pTextureImage, PointerBuffer pTextureImageMemory) {
+            int format, int tiling, int usage, int flags,
+            int memProperties,
+            LongBuffer pTextureImage, PointerBuffer pTextureImageMemory) {
         try (MemoryStack stack = stackPush()) {
             // 1. Criar imagem
             VkImageCreateInfo imageInfo = VkImageCreateInfo.calloc(stack);
@@ -199,8 +206,8 @@ public class MemoryManager {
             imageInfo.samples(VK_SAMPLE_COUNT_1_BIT);
             imageInfo.flags(flags);
             imageInfo.pQueueFamilyIndices(
-                stack.ints(Queue.getQueueFamilies().graphicsFamily,
-                           Queue.getQueueFamilies().computeFamily));
+                    stack.ints(Queue.getQueueFamilies().graphicsFamily,
+                            Queue.getQueueFamilies().computeFamily));
 
             int result = vkCreateImage(DeviceManager.vkDevice, imageInfo, null, pTextureImage);
             if (result != VK_SUCCESS)
@@ -239,10 +246,10 @@ public class MemoryManager {
 
     private static boolean isDepthFormat(int format) {
         return format == VK_FORMAT_D16_UNORM ||
-               format == VK_FORMAT_D32_SFLOAT ||
-               format == VK_FORMAT_D16_UNORM_S8_UINT ||
-               format == VK_FORMAT_D24_UNORM_S8_UINT ||
-               format == VK_FORMAT_D32_SFLOAT_S8_UINT;
+                format == VK_FORMAT_D32_SFLOAT ||
+                format == VK_FORMAT_D16_UNORM_S8_UINT ||
+                format == VK_FORMAT_D24_UNORM_S8_UINT ||
+                format == VK_FORMAT_D32_SFLOAT_S8_UINT;
     }
 
     public static void addImage(VulkanImage image) {
@@ -310,21 +317,25 @@ public class MemoryManager {
     }
 
     public void doFrameOps(int frame) {
-        for (Runnable runnable : frameOps[frame]) runnable.run();
+        for (Runnable runnable : frameOps[frame])
+            runnable.run();
         frameOps[frame].clear();
     }
 
     private void freeBuffers(int frame) {
         List<Buffer.BufferInfo> bufferList = freeableBuffers[frame];
-        for (Buffer.BufferInfo bufferInfo : bufferList) freeBuffer(bufferInfo);
+        for (Buffer.BufferInfo bufferInfo : bufferList)
+            freeBuffer(bufferInfo);
         bufferList.clear();
 
-        if (DEBUG) stackTraces[frame].clear();
+        if (DEBUG)
+            stackTraces[frame].clear();
     }
 
     private void freeImages(int frame) {
         List<VulkanImage> bufferList = freeableImages[frame];
-        for (VulkanImage image : bufferList) image.doFree();
+        for (VulkanImage image : bufferList)
+            image.doFree();
         bufferList.clear();
     }
 
@@ -335,7 +346,8 @@ public class MemoryManager {
 
     private void freeSegments(int frame) {
         var list = segmentsToFree[frame];
-        for (var pair : list) pair.first.setSegmentFree(pair.second);
+        for (var pair : list)
+            pair.first.setSegmentFree(pair.second);
         list.clear();
     }
 
@@ -343,13 +355,24 @@ public class MemoryManager {
         segmentsToFree[currentFrame].add(new Pair<>(areaBuffer, offset));
     }
 
-    public int getNativeMemoryMB() { return bytesInMb(nativeMemory); }
-    public int getAllocatedDeviceMemoryMB() { return bytesInMb(deviceMemory); }
-    public int getDeviceMemoryMB() { return bytesInMb(MemoryTypes.GPU_MEM.vkMemoryHeap.size()); }
-    int bytesInMb(long bytes) { return (int) (bytes / BYTES_IN_MB); }
+    public int getNativeMemoryMB() {
+        return bytesInMb(nativeMemory);
+    }
+
+    public int getAllocatedDeviceMemoryMB() {
+        return bytesInMb(deviceMemory);
+    }
+
+    public int getDeviceMemoryMB() {
+        return bytesInMb(MemoryTypes.GPU_MEM.vkMemoryHeap.size());
+    }
+
+    int bytesInMb(long bytes) {
+        return (int) (bytes / BYTES_IN_MB);
+    }
 
     public String getHeapStats() {
         // Sem VMA — reportar só o que temos em memória rastreada
         return String.format("Device Memory Usage: %d MB (tracked)", getAllocatedDeviceMemoryMB());
     }
-        }
+}

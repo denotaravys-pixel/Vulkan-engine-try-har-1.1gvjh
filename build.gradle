@@ -135,7 +135,7 @@ publishing {
 // Anti-regressão: verificar shaders SPIR-V antes de qualquer build
 // Lição aprendida: ShaderPrecompiler gerou placeholders de 20 bytes
 task checkSpirvShaders(type: Exec) {
-    commandLine 'python3', '/tmp/check_spv_before_build.py'
+    commandLine 'python3', "$projectDir/check_spv_before_build.py"
     description = 'Verificar que todos os .spv são SPIR-V válidos'
 }
 

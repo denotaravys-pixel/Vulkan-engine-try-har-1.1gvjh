@@ -10,6 +10,8 @@ import net.vulkanmod.vulkan.texture.VulkanImage;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 
+import static org.lwjgl.vulkan.VK10.VK_ATTACHMENT_STORE_OP_STORE;
+import static org.lwjgl.vulkan.VK11.VK_ATTACHMENT_LOAD_OP_CLEAR;
 import static org.lwjgl.vulkan.VK11.VK_ATTACHMENT_LOAD_OP_LOAD;
 import static org.lwjgl.vulkan.VK11.VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
@@ -125,13 +127,14 @@ public class VkGlFramebuffer {
     }
 
     public static void glBlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1,
-                                         int dstY1, int mask, int filter) {
+            int dstY1, int mask, int filter) {
         // TODO: add missing parameters
-        ImageUtil.blitFramebuffer(boundFramebuffer.colorAttachment, srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1);
+        ImageUtil.blitFramebuffer(boundFramebuffer.colorAttachment, srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1,
+                dstY1);
     }
 
     public static int glCheckFramebufferStatus(int target) {
-        //TODO
+        // TODO
         return GL30.GL_FRAMEBUFFER_COMPLETE;
     }
 
@@ -197,7 +200,7 @@ public class VkGlFramebuffer {
     }
 
     void setDepthAttachment(VulkanImage image) {
-        //TODO check if texture is in depth format
+        // TODO check if texture is in depth format
         this.depthAttachment = image;
     }
 
@@ -214,16 +217,16 @@ public class VkGlFramebuffer {
         VulkanImage depthImage = this.depthAttachment;
 
         this.framebuffer = Framebuffer.builder(this.colorAttachment, depthImage)
-                                      .build();
+                .build();
         RenderPass.Builder builder = RenderPass.builder(this.framebuffer);
 
         builder.getColorAttachmentInfo()
-               .setLoadOp(VK_ATTACHMENT_LOAD_OP_LOAD)
-               .setFinalLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+                .setLoadOp(VK_ATTACHMENT_LOAD_OP_LOAD)
+                .setFinalLayout(VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
 
         if (hasDepthImage) {
             builder.getDepthAttachmentInfo()
-                   .setOps(VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE);
+                    .setOps(VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE);
         }
 
         this.renderPass = builder.build();

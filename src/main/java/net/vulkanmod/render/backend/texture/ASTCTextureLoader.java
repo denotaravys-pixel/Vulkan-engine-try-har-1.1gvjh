@@ -11,7 +11,7 @@ public class ASTCTextureLoader {
     private static TextureFormat preferredFormat;
 
     public static void init() {
-        VkPhysicalDeviceFeatures features = DeviceManager.getPhysicalDeviceFeatures();
+        VkPhysicalDeviceFeatures features = DeviceManager.device.availableFeatures.features();
         astcSupported = features.textureCompressionASTC_LDR();
 
         if (astcSupported) {
@@ -38,12 +38,18 @@ public class ASTCTextureLoader {
 
     public static int getBlockSize(TextureFormat format) {
         switch (format) {
-            case ASTC_4x4: return 16; // 4x4 block = 16 bytes
-            case ASTC_6x6: return 16; // 6x6 block = 16 bytes
-            case ASTC_8x8: return 16; // 8x8 block = 16 bytes
-            case ETC2_RGB: return 8;  // ETC2 = 8 bytes per 4x4 block
-            case ETC2_RGBA: return 16; // ETC2 EAC = 16 bytes per 4x4 block
-            default: return 16;
+            case ASTC_4x4:
+                return 16; // 4x4 block = 16 bytes
+            case ASTC_6x6:
+                return 16; // 6x6 block = 16 bytes
+            case ASTC_8x8:
+                return 16; // 8x8 block = 16 bytes
+            case ETC2_RGB:
+                return 8; // ETC2 = 8 bytes per 4x4 block
+            case ETC2_RGBA:
+                return 16; // ETC2 EAC = 16 bytes per 4x4 block
+            default:
+                return 16;
         }
     }
 }

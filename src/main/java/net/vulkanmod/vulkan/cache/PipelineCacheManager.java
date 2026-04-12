@@ -1,6 +1,7 @@
 package net.vulkanmod.vulkan.cache;
 
 import net.vulkanmod.vulkan.Vulkan;
+import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.vulkan.VkPipelineCacheCreateInfo;
@@ -28,7 +29,7 @@ public class PipelineCacheManager {
     public static void init() {
         try (MemoryStack stack = stackPush()) {
             VkPipelineCacheCreateInfo cacheInfo = VkPipelineCacheCreateInfo.calloc(stack)
-                .sType(VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO);
+                    .sType(VK_STRUCTURE_TYPE_PIPELINE_CACHE_CREATE_INFO);
 
             // Try to load existing cache
             byte[] cacheData = loadCacheFromDisk();
@@ -53,7 +54,7 @@ public class PipelineCacheManager {
 
             if (result != VK_SUCCESS) {
                 System.err.println("[VULKANMOD] Falha ao criar pipeline cache: " + result
-                    + " — continuando sem cache");
+                        + " — continuando sem cache");
                 pipelineCache = VK_NULL_HANDLE;
                 return;
             }
@@ -64,15 +65,17 @@ public class PipelineCacheManager {
     }
 
     public static void saveCacheToDisk() {
-        if (pipelineCache == VK_NULL_HANDLE) return;
+        if (pipelineCache == VK_NULL_HANDLE)
+            return;
 
         try (MemoryStack stack = stackPush()) {
             // FIX: LongBuffer em vez de PointerBuffer para o tamanho
-            LongBuffer pDataSize = stack.mallocLong(1);
+            PointerBuffer pDataSize = stack.mallocPointer(1);
 
             // Primeiro call: obter tamanho
             int result = vkGetPipelineCacheData(Vulkan.getVkDevice(), pipelineCache, pDataSize, (ByteBuffer) null);
-            if (result != VK_SUCCESS || pDataSize.get(0) == 0) return;
+            if (result != VK_SUCCESS || pDataSize.get(0) == 0)
+                return;
 
             long dataSize = pDataSize.get(0);
 

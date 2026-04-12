@@ -99,11 +99,21 @@ public class GLESBackend implements RenderBackend {
     public boolean supportsFeature(String feature) {
         switch (feature) {
             case "framebuffer_fetch":
-                return caps.GL_ARM_shader_framebuffer_fetch;
+                return extensionAvailable("GL_ARM_shader_framebuffer_fetch")
+                        || extensionAvailable("GL_EXT_shader_framebuffer_fetch")
+                        || extensionAvailable("GL_NV_shader_framebuffer_fetch");
             case "pixel_local_storage":
-                return caps.GL_EXT_shader_pixel_local_storage;
+                return extensionAvailable("GL_EXT_shader_pixel_local_storage");
             default:
                 return false;
+        }
+    }
+
+    private boolean extensionAvailable(String fieldName) {
+        try {
+            return GLCapabilities.class.getField(fieldName).getBoolean(caps);
+        } catch (ReflectiveOperationException e) {
+            return false;
         }
     }
 
