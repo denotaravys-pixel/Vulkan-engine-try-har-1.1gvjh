@@ -1,0 +1,237 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.14.3/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+Fabric Loom: 1.12.7
+
+> Task :clean
+> Task :exportClasspath
+
+> Task :compileJava
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:14: error: cannot find symbol
+import net.vulkanmod.vulkan.shader.SPIRVUtils.SPIRV;
+                                             ^
+  symbol:   class SPIRV
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:15: error: cannot find symbol
+import net.vulkanmod.vulkan.shader.SPIRVUtils.ShaderKind;
+                                             ^
+  symbol:   class ShaderKind
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/GraphicsPipeline.java:217: error: cannot find symbol
+    private void createShaderModules(SPIRVUtils.SPIRV vertSpirv, SPIRVUtils.SPIRV fragSpirv) {
+                                               ^
+  symbol:   class SPIRV
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/GraphicsPipeline.java:217: error: cannot find symbol
+    private void createShaderModules(SPIRVUtils.SPIRV vertSpirv, SPIRVUtils.SPIRV fragSpirv) {
+                                                                           ^
+  symbol:   class SPIRV
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:269: error: cannot find symbol
+        SPIRV vertShaderSPIRV;
+        ^
+  symbol:   class SPIRV
+  location: class Builder
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:270: error: cannot find symbol
+        SPIRV fragShaderSPIRV;
+        ^
+  symbol:   class SPIRV
+  location: class Builder
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:305: error: cannot find symbol
+        public void setSPIRVs(SPIRV vertShaderSPIRV, SPIRV fragShaderSPIRV) {
+                              ^
+  symbol:   class SPIRV
+  location: class Builder
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:305: error: cannot find symbol
+        public void setSPIRVs(SPIRV vertShaderSPIRV, SPIRV fragShaderSPIRV) {
+                                                     ^
+  symbol:   class SPIRV
+  location: class Builder
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:315: error: cannot find symbol
+        public void setVertShaderSPIRV(SPIRV vertShaderSPIRV) {
+                                       ^
+  symbol:   class SPIRV
+  location: class Builder
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:319: error: cannot find symbol
+        public void setFragShaderSPIRV(SPIRV fragShaderSPIRV) {
+                                       ^
+  symbol:   class SPIRV
+  location: class Builder
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:58: error: cannot find symbol
+    public static void loadShader(Pipeline.Builder pipelineBuilder, String configName, String path, SPIRVUtils.ShaderKind type) {
+                                                                                                              ^
+  symbol:   class ShaderKind
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:66: error: cannot find symbol
+    public static void loadShader(Pipeline.Builder pipelineBuilder, String configName, String path, String shaderName, SPIRVUtils.ShaderKind type) {
+                                                                                                                                 ^
+  symbol:   class ShaderKind
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:183: error: cannot find symbol
+    public static String getShaderSource(String path, String configName, String shaderName, SPIRVUtils.ShaderKind type) {
+                                                                                                      ^
+  symbol:   class ShaderKind
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/GlUtil.java:16: error: cannot find symbol
+    public static SPIRVUtils.ShaderKind extToShaderKind(String ext) {
+                            ^
+  symbol:   class ShaderKind
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:311: error: cannot find symbol
+            this.vertShaderSPIRV = SPIRVUtils.compileShader(String.format("%s.vsh", name), vsh, ShaderKind.VERTEX_SHADER);
+                                                                                                ^
+  symbol:   variable ShaderKind
+  location: class Builder
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:312: error: cannot find symbol
+            this.fragShaderSPIRV = SPIRVUtils.compileShader(String.format("%s.fsh", name), fsh, ShaderKind.FRAGMENT_SHADER);
+                                                                                                ^
+  symbol:   variable ShaderKind
+  location: class Builder
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:54: error: cannot find symbol
+        loadShader(pipelineBuilder, configName, path, vertexShader, SPIRVUtils.ShaderKind.VERTEX_SHADER);
+                                                                              ^
+  symbol:   variable ShaderKind
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:55: error: cannot find symbol
+        loadShader(pipelineBuilder, configName, path, fragmentShader, SPIRVUtils.ShaderKind.FRAGMENT_SHADER);
+                                                                                ^
+  symbol:   variable ShaderKind
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:69: error: cannot find symbol
+        SPIRVUtils.SPIRV spirv = SPIRVUtils.compileShader(shaderName, source, type);
+                  ^
+  symbol:   class SPIRV
+  location: class SPIRVUtils
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/GlUtil.java:18: error: cannot find symbol
+            case ".vsh" -> SPIRVUtils.ShaderKind.VERTEX_SHADER;
+                                     ^
+  symbol:   variable ShaderKind
+  location: class SPIRVUtils
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+20 errors
+
+> Task :compileJava FAILED
+
+[Incubating] Problems report is available at: file:///workspaces/Vulkan-engine-try-har-1.1/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler output below.
+  Note: Recompile with -Xlint:deprecation for details.
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:14: error: cannot find symbol
+  import net.vulkanmod.vulkan.shader.SPIRVUtils.SPIRV;
+                                               ^
+    symbol:   class SPIRV
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:15: error: cannot find symbol
+  import net.vulkanmod.vulkan.shader.SPIRVUtils.ShaderKind;
+                                               ^
+    symbol:   class ShaderKind
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/GraphicsPipeline.java:217: error: cannot find symbol
+      private void createShaderModules(SPIRVUtils.SPIRV vertSpirv, SPIRVUtils.SPIRV fragSpirv) {
+                                                 ^
+    symbol:   class SPIRV
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/GraphicsPipeline.java:217: error: cannot find symbol
+      private void createShaderModules(SPIRVUtils.SPIRV vertSpirv, SPIRVUtils.SPIRV fragSpirv) {
+                                                                             ^
+    symbol:   class SPIRV
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:269: error: cannot find symbol
+          SPIRV vertShaderSPIRV;
+          ^
+    symbol:   class SPIRV
+    location: class Builder
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:270: error: cannot find symbol
+          SPIRV fragShaderSPIRV;
+          ^
+    symbol:   class SPIRV
+    location: class Builder
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:305: error: cannot find symbol
+          public void setSPIRVs(SPIRV vertShaderSPIRV, SPIRV fragShaderSPIRV) {
+                                ^
+    symbol:   class SPIRV
+    location: class Builder
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:305: error: cannot find symbol
+          public void setSPIRVs(SPIRV vertShaderSPIRV, SPIRV fragShaderSPIRV) {
+                                                       ^
+    symbol:   class SPIRV
+    location: class Builder
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:315: error: cannot find symbol
+          public void setVertShaderSPIRV(SPIRV vertShaderSPIRV) {
+                                         ^
+    symbol:   class SPIRV
+    location: class Builder
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:319: error: cannot find symbol
+          public void setFragShaderSPIRV(SPIRV fragShaderSPIRV) {
+                                         ^
+    symbol:   class SPIRV
+    location: class Builder
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:58: error: cannot find symbol
+      public static void loadShader(Pipeline.Builder pipelineBuilder, String configName, String path, SPIRVUtils.ShaderKind type) {
+                                                                                                                ^
+    symbol:   class ShaderKind
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:66: error: cannot find symbol
+      public static void loadShader(Pipeline.Builder pipelineBuilder, String configName, String path, String shaderName, SPIRVUtils.ShaderKind type) {
+                                                                                                                                   ^
+    symbol:   class ShaderKind
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:183: error: cannot find symbol
+      public static String getShaderSource(String path, String configName, String shaderName, SPIRVUtils.ShaderKind type) {
+                                                                                                        ^
+    symbol:   class ShaderKind
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/GlUtil.java:16: error: cannot find symbol
+      public static SPIRVUtils.ShaderKind extToShaderKind(String ext) {
+                              ^
+    symbol:   class ShaderKind
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:311: error: cannot find symbol
+              this.vertShaderSPIRV = SPIRVUtils.compileShader(String.format("%s.vsh", name), vsh, ShaderKind.VERTEX_SHADER);
+                                                                                                  ^
+    symbol:   variable ShaderKind
+    location: class Builder
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/shader/Pipeline.java:312: error: cannot find symbol
+              this.fragShaderSPIRV = SPIRVUtils.compileShader(String.format("%s.fsh", name), fsh, ShaderKind.FRAGMENT_SHADER);
+                                                                                                  ^
+    symbol:   variable ShaderKind
+    location: class Builder
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:54: error: cannot find symbol
+          loadShader(pipelineBuilder, configName, path, vertexShader, SPIRVUtils.ShaderKind.VERTEX_SHADER);
+                                                                                ^
+    symbol:   variable ShaderKind
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:55: error: cannot find symbol
+          loadShader(pipelineBuilder, configName, path, fragmentShader, SPIRVUtils.ShaderKind.FRAGMENT_SHADER);
+                                                                                  ^
+    symbol:   variable ShaderKind
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/shader/ShaderLoadUtil.java:69: error: cannot find symbol
+          SPIRVUtils.SPIRV spirv = SPIRVUtils.compileShader(shaderName, source, type);
+                    ^
+    symbol:   class SPIRV
+    location: class SPIRVUtils
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/GlUtil.java:18: error: cannot find symbol
+              case ".vsh" -> SPIRVUtils.ShaderKind.VERTEX_SHADER;
+                                       ^
+    symbol:   variable ShaderKind
+    location: class SPIRVUtils
+  Note: Recompile with -Xlint:unchecked for details.
+  Note: Some input files use or override a deprecated API.
+  Note: Some input files use unchecked or unsafe operations.
+  20 errors
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights.
+
+BUILD FAILED in 13s
+3 actionable tasks: 3 executed
