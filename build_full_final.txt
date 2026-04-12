@@ -1,0 +1,50 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.14.3/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+Fabric Loom: 1.12.7
+
+> Task :exportClasspath UP-TO-DATE
+> Task :compileJava UP-TO-DATE
+
+> Task :checkSpirvShaders
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/basic/blit/blit.frag.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/basic/blit/blit.vert.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.frag.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/basic/clouds/clouds.vert.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.frag.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/basic/terrain/terrain.vert.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/basic/terrain_earlyz/terrain_earlyz.frag.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/basic/terrain_earlyz/terrain_earlyz.vert.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/core/rendertype_item_entity_translucent_cull/rendertype_item_entity_translucent_cull.vert.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/core/screenquad/screenquad.vert.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/post/blit/blit.vert.spv
+✅ /workspaces/Vulkan-engine-try-har-1.1/src/main/resources/assets/vulkanmod/shaders/post/blit/blur.vert.spv
+✅ Validated 12 SPIR-V files
+
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :jar
+> Task :processIncludeJars UP-TO-DATE
+> Task :sourcesJar
+> Task :compileTestJava NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :test NO-SOURCE
+> Task :validateAccessWidener UP-TO-DATE
+> Task :check UP-TO-DATE
+> Task :remapJar
+> Task :remapSourcesJar
+> Task :assemble
+> Task :build
+
+[Incubating] Problems report is available at: file:///workspaces/Vulkan-engine-try-har-1.1/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.14.3/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 35s
+10 actionable tasks: 5 executed, 5 up-to-date

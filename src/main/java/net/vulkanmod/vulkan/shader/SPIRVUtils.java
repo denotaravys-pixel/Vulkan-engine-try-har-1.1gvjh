@@ -54,7 +54,7 @@ public class SPIRVUtils {
 
     public static SPIRV compileShaderFile(String shaderFile, ShaderKind kind) {
         if (IS_ANDROID) {
-            ByteBuffer buf = loadSPV(shaderFile);
+            ByteBuffer buf = loadSPV(shaderFile, kind);
             if (buf == null) return null;
             return new SPIRV(buf, shaderFile);
         }
@@ -63,7 +63,7 @@ public class SPIRVUtils {
 
     public static SPIRV compileShader(String name, CharSequence source, ShaderKind kind) {
         if (IS_ANDROID) {
-            ByteBuffer buf = loadSPV(name);
+            ByteBuffer buf = loadSPV(name, kind);
             if (buf == null) return null;
             return new SPIRV(buf, name);
         }
@@ -88,23 +88,32 @@ public class SPIRVUtils {
     }
 
     public static ByteBuffer loadSPV(String name) {
-        System.err.println("[VULKANMOD] loadSPV: " + name);
+        return loadSPV(name, null);
+    }
 
+    public static ByteBuffer loadSPV(String name, ShaderKind kind) {
+        System.err.println("[VULKANMOD] loadSPV: name=" + name + " kind=" + kind);
+
+        String base = name.replaceAll("\\.(vsh|fsh|vert|frag|comp|geom|tesc|tese|glsl)$", "");
         java.util.List<String> paths = new java.util.ArrayList<>();
 
-        if (name.contains("/")) {
-            String base = name.startsWith("/") ? name : "/" + name;
-            paths.add(base + ".spv");
-            String noExt = base.replaceAll("\\.(vsh|fsh|vert|frag|comp|geom|tesc|tese|glsl)$", "");
-            if (!noExt.equals(base)) {
-                paths.add(noExt + ".spv");
-            }
-        } else {
-            String noExt = name.replaceAll("\\.(vsh|fsh|vert|frag|comp|geom|tesc|tese|glsl)$", "");
+        if (kind == ShaderKind.VERTEX_SHADER) {
+            paths.add("/assets/vulkanmod/shaders/" + base + ".vsh.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".vert.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".spv");
             paths.add("/assets/vulkanmod/shaders/" + name + ".spv");
-            if (!noExt.equals(name)) {
-                paths.add("/assets/vulkanmod/shaders/" + noExt + ".spv");
-            }
+        } else if (kind == ShaderKind.FRAGMENT_SHADER) {
+            paths.add("/assets/vulkanmod/shaders/" + base + ".fsh.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".frag.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".spv");
+            paths.add("/assets/vulkanmod/shaders/" + name + ".spv");
+        } else {
+            paths.add("/assets/vulkanmod/shaders/" + name + ".spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".vsh.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".vert.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".fsh.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".frag.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".spv");
         }
 
         for (String path : paths) {
