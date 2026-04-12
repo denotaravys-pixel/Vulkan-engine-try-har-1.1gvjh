@@ -140,4 +140,4 @@ public class Synchronization {
         return vkGetFenceStatus(device, fence) == VK_SUCCESS;
     }
 
-  }
+ }
