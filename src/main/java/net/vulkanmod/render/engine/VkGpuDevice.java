@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 
 import java.nio.ByteBuffer;
 import java.util.*;
+import java.util.Collections;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
@@ -52,15 +53,19 @@ public class VkGpuDevice implements GpuDevice {
     private final Map<RenderPipeline, GlRenderPipeline> pipelineCache = new IdentityHashMap<>();
     private final Map<ShaderCompilationKey, GlShaderModule> shaderCache = new HashMap<>();
     private final Set<String> enabledExtensions = new HashSet<>();
-
     private final Map<ShaderCompilationKey, String> shaderSrcCache = new HashMap<>();
+
+    // FIX: Rastreia pipelines que já falharam para evitar flood de logs e
+    // tentativas repetidas a cada frame. Usa IdentityHashMap para comparação
+    // por referência (igual ao pipelineCache acima).
+    private final Set<RenderPipeline> failedPipelines =
+            Collections.newSetFromMap(new IdentityHashMap<>());
 
     public VkGpuDevice(long l, int i, boolean bl, BiFunction<ResourceLocation, ShaderType, String> shaderSource, boolean bl2) {
         this.debugLabels = VkDebugLabel.create(bl2, this.enabledExtensions);
         this.maxSupportedTextureSize = VRenderSystem.maxSupportedTextureSize();
         this.uniformOffsetAlignment = (int) DeviceManager.deviceProperties.limits().minUniformBufferOffsetAlignment();
         this.defaultShaderSource = shaderSource;
-
         this.encoder = new VkCommandEncoder(this);
     }
 
@@ -91,7 +96,9 @@ public class VkGpuDevice implements GpuDevice {
             int format = VkGpuTexture.vkFormat(textureFormat);
             int viewType = VkGpuTexture.vkImageViewType(usage);
             boolean depthFormat = VulkanImage.isDepthFormat(format);
-            int attachmentUsage = depthFormat ? VK10.VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT : VK10.VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+            int attachmentUsage = depthFormat
+                    ? VK10.VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT
+                    : VK10.VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
             VulkanImage texture = VulkanImage.builder(width, height)
                                              .setName(string)
@@ -132,16 +139,14 @@ public class VkGpuDevice implements GpuDevice {
         if (gpuTexture.isClosed()) {
             throw new IllegalArgumentException("Can't create texture view with closed texture");
         } else if (startLevel >= 0 && startLevel + levels <= gpuTexture.getMipLevels()) {
-
-            // Try to convert gpuTexture to VkGpuTexture in case it's not
             if (gpuTexture.getClass() != VkGpuTexture.class) {
                 gpuTexture = VkGpuTexture.fromGlTexture((GlTexture) gpuTexture);
             }
-
             return new VkTextureView((VkGpuTexture) gpuTexture, startLevel, levels);
         } else {
             throw new IllegalArgumentException(
-                    levels + " mip levels starting from " + startLevel + " would be out of range for texture with only " + gpuTexture.getMipLevels() + " mip levels"
+                    levels + " mip levels starting from " + startLevel
+                    + " would be out of range for texture with only " + gpuTexture.getMipLevels() + " mip levels"
             );
         }
     }
@@ -244,6 +249,7 @@ public class VkGpuDevice implements GpuDevice {
         }
 
         this.shaderCache.clear();
+        this.failedPipelines.clear();
     }
 
     @Override
@@ -257,13 +263,18 @@ public class VkGpuDevice implements GpuDevice {
     }
 
     protected GlShaderModule getOrCompileShader(
-            ResourceLocation resourceLocation, ShaderType shaderType, ShaderDefines shaderDefines, BiFunction<ResourceLocation, ShaderType, String> biFunction
+            ResourceLocation resourceLocation, ShaderType shaderType, ShaderDefines shaderDefines,
+            BiFunction<ResourceLocation, ShaderType, String> biFunction
     ) {
         ShaderCompilationKey shaderCompilationKey = new ShaderCompilationKey(resourceLocation, shaderType, shaderDefines);
-        return this.shaderCache.computeIfAbsent(shaderCompilationKey, shaderCompilationKey2 -> this.compileShader(shaderCompilationKey, biFunction));
+        return this.shaderCache.computeIfAbsent(shaderCompilationKey,
+                shaderCompilationKey2 -> this.compileShader(shaderCompilationKey, biFunction));
     }
 
-    protected String getCachedShaderSrc(ResourceLocation resourceLocation, ShaderType shaderType, ShaderDefines shaderDefines, BiFunction<ResourceLocation, ShaderType, String> shaderSourceGetter) {
+    protected String getCachedShaderSrc(
+            ResourceLocation resourceLocation, ShaderType shaderType, ShaderDefines shaderDefines,
+            BiFunction<ResourceLocation, ShaderType, String> shaderSourceGetter
+    ) {
         ShaderCompilationKey shaderCompilationKey = new ShaderCompilationKey(resourceLocation, shaderType, shaderDefines);
 
         return this.shaderSrcCache.computeIfAbsent(shaderCompilationKey, compilationKey -> {
@@ -278,7 +289,8 @@ public class VkGpuDevice implements GpuDevice {
                 String src = ShaderLoadUtil.getShaderSource(resourceLocation, shaderType);
 
                 if (src == null) {
-                    throw new RuntimeException("shader: (%s) not found.");
+                    // FIX: Formato correcto — a mensagem original não passava o argumento
+                    throw new RuntimeException("shader: (%s) not found.".formatted(resourceLocation));
                 }
 
                 return src;
@@ -288,29 +300,78 @@ public class VkGpuDevice implements GpuDevice {
         });
     }
 
-    // FIX Android: precompilePipeline não deve compilar shaders em Android.
-    // Em Android, os shaders SPIR-V são pré-compilados. Tentar compilar aqui
-    // causa RuntimeException porque libshaderc não existe em ARM64 Android.
-    // O VkRenderPipeline retornado é válido — a pipeline real é criada
-    // na primeira utilização via getOrCreatePipeline() em VkCommandEncoder.
-    public CompiledRenderPipeline precompilePipeline(RenderPipeline renderPipeline, @Nullable BiFunction<ResourceLocation, ShaderType, String> shaderSourceGetter) {
-        if (!Platform.isAndroid()) {
-            shaderSourceGetter = shaderSourceGetter == null ? this.defaultShaderSource : shaderSourceGetter;
-            compilePipeline(renderPipeline, shaderSourceGetter);
+    /**
+     * FIX ANDROID — precompilePipeline
+     *
+     * Guard anterior: if (!Platform.isAndroid()) compilePipeline(...)
+     * Resultado: em Android, NENHUM pipeline do Minecraft era criado → ecrã negro.
+     *
+     * Novo comportamento:
+     * - Tenta criar o pipeline em qualquer plataforma
+     * - Erros são apanhados e logados UMA VEZ por pipeline (sem flood)
+     * - Retorna sempre VkRenderPipeline válido (MC não crasha)
+     * - Se SPIRVUtils conseguir carregar SPIR-V precompilado para este shader → funciona
+     * - Se não conseguir → pipeline fica null → draws são skipped graciosamente
+     */
+    @Override
+    public CompiledRenderPipeline precompilePipeline(
+            RenderPipeline renderPipeline,
+            @Nullable BiFunction<ResourceLocation, ShaderType, String> shaderSourceGetter
+    ) {
+        if (!failedPipelines.contains(renderPipeline)
+                && ExtendedRenderPipeline.of(renderPipeline).getPipeline() == null) {
+
+            BiFunction<ResourceLocation, ShaderType, String> srcGetter =
+                    shaderSourceGetter == null ? this.defaultShaderSource : shaderSourceGetter;
+
+            try {
+                compilePipelineInternal(renderPipeline, srcGetter);
+            } catch (Exception e) {
+                LOGGER.warn("[VkGpuDevice] precompilePipeline falhou para '{}': {}",
+                        renderPipeline.getLocation(), e.getMessage());
+                // Marca como falhado — não tentar de novo a cada frame
+                failedPipelines.add(renderPipeline);
+            }
         }
 
         return new VkRenderPipeline(renderPipeline);
     }
 
+    /**
+     * FIX ANDROID — compilePipeline (lazy, chamado por VkRenderPass.setPipeline)
+     *
+     * Guard anterior: if (Platform.isAndroid()) return;
+     * Resultado: lazy compilation bloqueada em Android → pipeline nunca criado.
+     *
+     * Novo comportamento:
+     * - Tenta compilar em qualquer plataforma
+     * - Se já falhou antes → skip silencioso (sem spam de logs)
+     * - Se pipeline já foi criado com sucesso → skip
+     */
     public void compilePipeline(RenderPipeline renderPipeline) {
-        if (Platform.isAndroid()) return;
-        this.compilePipeline(renderPipeline, this.defaultShaderSource);
+        // Já falhou antes → não repetir tentativa (evita flood de logs)
+        if (failedPipelines.contains(renderPipeline)) return;
+
+        // Já compilado com sucesso → nada a fazer
+        if (ExtendedRenderPipeline.of(renderPipeline).getPipeline() != null) return;
+
+        try {
+            compilePipelineInternal(renderPipeline, this.defaultShaderSource);
+        } catch (Exception e) {
+            LOGGER.warn("[VkGpuDevice] compilePipeline (lazy) falhou para '{}': {}",
+                    renderPipeline.getLocation(), e.getMessage());
+            failedPipelines.add(renderPipeline);
+        }
     }
 
-    private GlShaderModule compileShader(ShaderCompilationKey shaderCompilationKey, BiFunction<ResourceLocation, ShaderType, String> biFunction) {
+    private GlShaderModule compileShader(
+            ShaderCompilationKey shaderCompilationKey,
+            BiFunction<ResourceLocation, ShaderType, String> biFunction
+    ) {
         String string = biFunction.apply(shaderCompilationKey.id, shaderCompilationKey.type);
         if (string == null) {
-            LOGGER.error("Couldn't find source for {} shader ({})", shaderCompilationKey.type, shaderCompilationKey.id);
+            LOGGER.error("Couldn't find source for {} shader ({})",
+                    shaderCompilationKey.type, shaderCompilationKey.id);
             return GlShaderModule.INVALID_SHADER;
         } else {
             String string2 = GlslPreprocessor.injectDefines(string, shaderCompilationKey.defines);
@@ -319,7 +380,8 @@ public class VkGpuDevice implements GpuDevice {
             GlStateManager.glCompileShader(i);
             if (GlStateManager.glGetShaderi(i, 35713) == 0) {
                 String string3 = StringUtils.trim(GlStateManager.glGetShaderInfoLog(i, 32768));
-                LOGGER.error("Couldn't compile {} shader ({}): {}", shaderCompilationKey.type.getName(), shaderCompilationKey.id, string3);
+                LOGGER.error("Couldn't compile {} shader ({}): {}",
+                        shaderCompilationKey.type.getName(), shaderCompilationKey.id, string3);
                 return GlShaderModule.INVALID_SHADER;
             } else {
                 GlShaderModule glShaderModule = new GlShaderModule(i, shaderCompilationKey.id, shaderCompilationKey.type);
@@ -329,7 +391,28 @@ public class VkGpuDevice implements GpuDevice {
         }
     }
 
-    private void compilePipeline(RenderPipeline renderPipeline, BiFunction<ResourceLocation, ShaderType, String> shaderSrcGetter) {
+    /**
+     * Lógica central de compilação de pipeline — partilhada por precompilePipeline e compilePipeline.
+     *
+     * FLUXO:
+     * 1. Resolve nome do config a partir do ResourceLocation
+     * 2. Obtém fonte GLSL (de MC ou de REMAPPED_SHADERS do VulkanMod)
+     * 3. Processa GLSL com GLSLParser → extrai UBOs, samplers
+     * 4. Compila GLSL processado → SPIR-V via SPIRVUtils
+     *    - Em Desktop: usa libshaderc
+     *    - Em Android: SPIRVUtils tenta carregar SPIR-V precompilado do resource pack
+     *      Se não existir SPV para este shader → lança excepção → apanhada pelo caller
+     * 5. Cria GraphicsPipeline Vulkan
+     * 6. Cria EGlProgram com UBOs/samplers do shader
+     * 7. Regista pipeline e programa em ExtendedRenderPipeline (mixin)
+     *
+     * NOTA: Se SPIRVUtils retornar null (Android sem SPV precompilado), o Builder
+     * lança IllegalArgumentException em createGraphicsPipeline(). O caller trata-o.
+     */
+    private void compilePipelineInternal(
+            RenderPipeline renderPipeline,
+            BiFunction<ResourceLocation, ShaderType, String> shaderSrcGetter
+    ) {
         String locationPath = renderPipeline.getLocation().getPath();
 
         String configName;
@@ -340,16 +423,22 @@ public class VkGpuDevice implements GpuDevice {
         }
 
         Pipeline.Builder builder = new Pipeline.Builder(renderPipeline.getVertexFormat(), configName);
-        GraphicsPipeline pipeline;
         ExtendedRenderPipeline extPipeline = ExtendedRenderPipeline.of(renderPipeline);
 
         ResourceLocation vertexShaderLocation = renderPipeline.getVertexShader();
         ResourceLocation fragmentShaderLocation = renderPipeline.getFragmentShader();
-
         ShaderDefines shaderDefines = renderPipeline.getShaderDefines();
 
+        // FIX: null-check nas fontes GLSL — shader pode não estar disponível
         String vshSrc = this.getCachedShaderSrc(vertexShaderLocation, ShaderType.VERTEX, shaderDefines, shaderSrcGetter);
         String fshSrc = this.getCachedShaderSrc(fragmentShaderLocation, ShaderType.FRAGMENT, shaderDefines, shaderSrcGetter);
+
+        if (vshSrc == null || fshSrc == null) {
+            throw new RuntimeException("Shader source null para pipeline '%s' (vert=%s, frag=%s)"
+                    .formatted(configName,
+                               vshSrc == null ? "NULL" : "OK",
+                               fshSrc == null ? "NULL" : "OK"));
+        }
 
         vshSrc = GlslPreprocessor.injectDefines(vshSrc, shaderDefines);
         fshSrc = GlslPreprocessor.injectDefines(fshSrc, shaderDefines);
@@ -360,33 +449,37 @@ public class VkGpuDevice implements GpuDevice {
 
         try {
             parser.parse(lexer, GLSLParser.Stage.VERTEX);
-
             lexer = new Lexer(fshSrc);
             parser.parse(lexer, GLSLParser.Stage.FRAGMENT);
         } catch (Exception e) {
-            throw new RuntimeException("Caught exception while parsing: %s".formatted(renderPipeline.toString()), e);
+            throw new RuntimeException("GLSLParser falhou para '%s'".formatted(renderPipeline), e);
         }
 
         UBO[] ubos = parser.createUBOs();
-
         String vshProcessed = parser.getOutput(GLSLParser.Stage.VERTEX);
         String fshProcessed = parser.getOutput(GLSLParser.Stage.FRAGMENT);
 
         builder.setUniforms(List.of(ubos), parser.getSamplerList());
+
+        // compileShaders chama SPIRVUtils.compileShader() internamente.
+        // Em Android: SPIRVUtils tenta carregar SPIR-V precompilado pelo nome.
+        // Se não encontrar → retorna null → createGraphicsPipeline() lança
+        // IllegalArgumentException → apanhada pelo caller (compilePipeline / precompilePipeline)
         builder.compileShaders(configName, vshProcessed, fshProcessed);
 
+        GraphicsPipeline pipeline;
         try {
             pipeline = builder.createGraphicsPipeline();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Exception while compiling pipeline %s".formatted(renderPipeline));
+            throw new RuntimeException("createGraphicsPipeline falhou para '%s'".formatted(renderPipeline), e);
         }
 
         EGlProgram eGlProgram = new EGlProgram(1, configName);
         eGlProgram.setupUniforms(pipeline, renderPipeline.getUniforms(), renderPipeline.getSamplers());
         extPipeline.setProgram(eGlProgram);
-
         extPipeline.setPipeline(pipeline);
+
+        LOGGER.debug("[VkGpuDevice] Pipeline compilado com sucesso: {}", configName);
     }
 
     @Environment(EnvType.CLIENT)
