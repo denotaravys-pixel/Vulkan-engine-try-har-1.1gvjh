@@ -17,6 +17,15 @@ public class VUtil {
 
     public static final int UINT32_MAX = 0xFFFFFFFF;
     public static final long UINT64_MAX = 0xFFFFFFFFFFFFFFFFL;
+    public static final long FENCE_TIMEOUT_NS = 3_000_000_000L; // 3s
+
+    public static int align16(int value) {
+        return (value + 15) & ~15;
+    }
+
+    public static long align16(long value) {
+        return (value + 15L) & ~15L;
+    }
 
     public static final Unsafe UNSAFE;
 

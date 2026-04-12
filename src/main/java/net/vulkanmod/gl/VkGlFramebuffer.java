@@ -223,7 +223,7 @@ public class VkGlFramebuffer {
 
         if (hasDepthImage) {
             builder.getDepthAttachmentInfo()
-                   .setOps(VK_ATTACHMENT_LOAD_OP_LOAD, VK_ATTACHMENT_LOAD_OP_LOAD);
+                   .setOps(VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE);
         }
 
         this.renderPass = builder.build();

@@ -29,6 +29,18 @@ public class DrawBuffers {
 
     private static final int CMD_STRIDE = 32;
 
+    // ── Android guard ───────────────────────────────
+    private static final boolean USE_INDIRECT_DRAW = detectIndirect();
+    private static boolean detectIndirect() {
+        try {
+            Class.forName("android.os.Build");
+            System.err.println("[VULKANMOD] DrawBuffers: indirect DISABLED (Android)");
+            return false;
+        } catch (ClassNotFoundException e) {
+            return true;
+        }
+    }
+
     private static final long cmdBufferPtr = MemoryUtil.nmemAlignedAlloc(CMD_STRIDE, (long) ChunkAreaManager.AREA_SIZE * QuadFacing.COUNT * CMD_STRIDE);
 
     private final int index;
@@ -156,7 +168,26 @@ public class DrawBuffers {
         vkCmdPushConstants(commandBuffer, pipeline.getLayout(), VK_SHADER_STAGE_VERTEX_BIT, 0, byteBuffer);
     }
 
+    public void buildBatches(
+            Vec3 cameraPos,
+            IndirectBuffer indirectBuffer,
+            StaticQueue<RenderSection> queue,
+            TerrainRenderType renderType) {
+        if (USE_INDIRECT_DRAW && indirectBuffer != null) {
+            buildDrawBatchesIndirect(cameraPos, indirectBuffer, queue, renderType);
+        } else {
+            System.err.println("[VULKANMOD] USING DIRECT DRAW (Android/Mali)");
+            buildDrawBatchesDirect(cameraPos, queue, renderType);
+        }
+    }
+
     public void buildDrawBatchesIndirect(Vec3 cameraPos, IndirectBuffer indirectBuffer, StaticQueue<RenderSection> queue, TerrainRenderType terrainRenderType) {
+        if (!USE_INDIRECT_DRAW) {
+            System.err.println("[VULKANMOD] WARN: indirect chamado no Android!");
+            buildDrawBatchesDirect(cameraPos, queue, terrainRenderType);
+            return;
+        }
+
         boolean isTranslucent = terrainRenderType == TerrainRenderType.TRANSLUCENT;
         boolean backFaceCulling = Initializer.CONFIG.backFaceCulling && !isTranslucent;
 

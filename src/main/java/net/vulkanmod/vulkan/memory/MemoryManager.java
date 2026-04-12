@@ -214,7 +214,14 @@ public class MemoryManager {
             VkMemoryAllocateInfo allocInfo = VkMemoryAllocateInfo.calloc(stack);
             allocInfo.sType(VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO);
             allocInfo.allocationSize(memReqs.size());
-            allocInfo.memoryTypeIndex(findMemoryType(memReqs.memoryTypeBits(), memProperties));
+
+            // Use lazy memory for depth/stencil formats to avoid bandwidth cost
+            int memoryProperties = memProperties;
+            if (isDepthFormat(format) && MemoryTypes.LAZY_DEPTH_MEM != null) {
+                memoryProperties = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT;
+            }
+
+            allocInfo.memoryTypeIndex(findMemoryType(memReqs.memoryTypeBits(), memoryProperties));
 
             LongBuffer pMemory = stack.mallocLong(1);
             result = vkAllocateMemory(DeviceManager.vkDevice, allocInfo, null, pMemory);
@@ -228,6 +235,14 @@ public class MemoryManager {
 
             pTextureImageMemory.put(0, memory);
         }
+    }
+
+    private static boolean isDepthFormat(int format) {
+        return format == VK_FORMAT_D16_UNORM ||
+               format == VK_FORMAT_D32_SFLOAT ||
+               format == VK_FORMAT_D16_UNORM_S8_UINT ||
+               format == VK_FORMAT_D24_UNORM_S8_UINT ||
+               format == VK_FORMAT_D32_SFLOAT_S8_UINT;
     }
 
     public static void addImage(VulkanImage image) {

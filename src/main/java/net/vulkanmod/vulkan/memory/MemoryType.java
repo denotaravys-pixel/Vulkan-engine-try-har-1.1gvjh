@@ -31,6 +31,7 @@ public abstract class MemoryType {
 
     public enum Type {
         DEVICE_LOCAL,
-        HOST_LOCAL
+        HOST_LOCAL,
+        LAZY_DEPTH
     }
 }

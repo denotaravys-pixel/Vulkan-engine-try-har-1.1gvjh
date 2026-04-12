@@ -64,7 +64,7 @@ public class Synchronization {
 
         fences.limit(idx);
 
-        vkWaitForFences(device, fences, true, VUtil.UINT64_MAX);
+        vkWaitForFences(device, fences, true, VUtil.FENCE_TIMEOUT_NS);
 
         this.fenceCbs.forEach(CommandPool.CommandBuffer::reset);
         this.fenceCbs.clear();
@@ -102,7 +102,7 @@ public class Synchronization {
     public static void waitFence(long fence) {
         VkDevice device = Vulkan.getVkDevice();
 
-        vkWaitForFences(device, fence, true, VUtil.UINT64_MAX);
+        vkWaitForFences(device, fence, true, VUtil.FENCE_TIMEOUT_NS);
     }
 
     public static boolean checkFenceStatus(long fence) {

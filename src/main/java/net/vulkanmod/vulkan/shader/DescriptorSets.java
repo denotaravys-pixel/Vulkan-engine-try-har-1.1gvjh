@@ -8,6 +8,7 @@ import net.vulkanmod.vulkan.memory.buffer.UniformBuffer;
 import net.vulkanmod.vulkan.shader.descriptor.ImageDescriptor;
 import net.vulkanmod.vulkan.shader.descriptor.UBO;
 import net.vulkanmod.vulkan.texture.VulkanImage;
+import net.vulkanmod.vulkan.util.VUtil;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 import org.lwjgl.vulkan.*;
@@ -96,7 +97,7 @@ public class DescriptorSets {
                 bufferSlice.set(globalUB, offset, alignedSize);
             }
 
-            this.dynamicOffsets.put(i, offset);
+            this.dynamicOffsets.put(i, VUtil.align16(offset));
 
             ++i;
         }

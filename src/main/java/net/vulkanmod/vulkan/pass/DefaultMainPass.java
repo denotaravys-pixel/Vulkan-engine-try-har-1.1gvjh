@@ -65,7 +65,7 @@ public class DefaultMainPass implements MainPass {
         // FIX: DEPTH usa DONT_CARE na reentrada — a GUI não usa o depth buffer do
         // frame 3D anterior. COR mantém LOAD (necessário para compositar GUI sobre 3D).
         builder = RenderPass.builder(this.mainFramebuffer);
-        builder.getColorAttachmentInfo().setOps(VK_ATTACHMENT_LOAD_OP_LOAD, VK_ATTACHMENT_STORE_OP_STORE);
+        builder.getColorAttachmentInfo().setOps(VK_ATTACHMENT_LOAD_OP_LOAD, VK_ATTACHMENT_STORE_OP_STORE); // INTENTIONAL - needed for GUI compositing over 3D
         builder.getColorAttachmentInfo().setFinalLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
         builder.getDepthAttachmentInfo().setOps(
             VK_ATTACHMENT_LOAD_OP_DONT_CARE,  // FIX: era LOAD — tile flush desnecessário em TBDR

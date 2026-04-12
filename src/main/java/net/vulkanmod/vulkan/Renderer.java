@@ -26,7 +26,7 @@ import net.vulkanmod.vulkan.shader.PipelineState;
 import net.vulkanmod.vulkan.shader.Uniforms;
 import net.vulkanmod.vulkan.shader.layout.PushConstants;
 import net.vulkanmod.vulkan.texture.VTextureSelector;
-import net.vulkanmod.vulkan.util.VUtil;
+import net.vulkanmod.vulkan.sync.TimelineSemaphoreManager;
 import net.vulkanmod.vulkan.util.VkResult;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
@@ -46,6 +46,7 @@ import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.vulkan.EXTDebugUtils.*;
 import static org.lwjgl.vulkan.KHRSwapchain.*;
+import static org.lwjgl.vulkan.KHRTimelineSemaphore.*;
 import static org.lwjgl.vulkan.VK10.*;
 
 public class Renderer {
@@ -132,6 +133,8 @@ public class Renderer {
         PipelineManager.init();
         UploadManager.createInstance();
 
+        TimelineSemaphoreManager.init();
+
         allocateCommandBuffers();
         createSyncObjects();
     }
@@ -179,33 +182,27 @@ public class Renderer {
     private void createSyncObjects() {
         imageAvailableSemaphores = new ArrayList<>(framesNum);
         renderFinishedSemaphores = new ArrayList<>(framesNum);
-        inFlightFences = new ArrayList<>(framesNum);
+        // Remove inFlightFences - using timeline semaphore instead
 
         try (MemoryStack stack = stackPush()) {
 
             VkSemaphoreCreateInfo semaphoreInfo = VkSemaphoreCreateInfo.calloc(stack);
             semaphoreInfo.sType(VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO);
 
-            VkFenceCreateInfo fenceInfo = VkFenceCreateInfo.calloc(stack);
-            fenceInfo.sType(VK_STRUCTURE_TYPE_FENCE_CREATE_INFO);
-            fenceInfo.flags(VK_FENCE_CREATE_SIGNALED_BIT);
-
             LongBuffer pImageAvailableSemaphore = stack.mallocLong(1);
             LongBuffer pRenderFinishedSemaphore = stack.mallocLong(1);
-            LongBuffer pFence = stack.mallocLong(1);
 
             for (int i = 0; i < framesNum; i++) {
 
                 if (vkCreateSemaphore(device, semaphoreInfo, null, pImageAvailableSemaphore) != VK_SUCCESS
-                    || vkCreateSemaphore(device, semaphoreInfo, null, pRenderFinishedSemaphore) != VK_SUCCESS
-                    || vkCreateFence(device, fenceInfo, null, pFence) != VK_SUCCESS) {
+                    || vkCreateSemaphore(device, semaphoreInfo, null, pRenderFinishedSemaphore) != VK_SUCCESS) {
 
                     throw new RuntimeException("Failed to create synchronization objects for the frame: " + i);
                 }
 
                 imageAvailableSemaphores.add(pImageAvailableSemaphore.get(0));
                 renderFinishedSemaphores.add(pRenderFinishedSemaphore.get(0));
-                inFlightFences.add(pFence.get(0));
+                // No fences needed with timeline semaphore
 
             }
 
@@ -263,7 +260,7 @@ public class Renderer {
         p.pop();
         p.push("Frame_fence");
 
-        vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.UINT64_MAX);
+        vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
 
         p.pop();
         p.push("Begin_rendering");
@@ -370,12 +367,11 @@ public class Renderer {
             submitInfo.pWaitSemaphores(waitSemaphores);
             submitInfo.waitSemaphoreCount(waitSemaphores.limit());
             submitInfo.pWaitDstStageMask(waitDstStageMask);
-            submitInfo.pSignalSemaphores(stack.longs(renderFinishedSemaphores.get(currentFrame)));
-            submitInfo.pCommandBuffers(stack.pointers(currentCmdBuffer));
-
-            vkResetFences(device, inFlightFences.get(currentFrame));
-
-            if ((vkResult = vkQueueSubmit(DeviceManager.getGraphicsQueue().vkQueue(), submitInfo, inFlightFences.get(currentFrame))) != VK_SUCCESS) {
+            submitInfo.pSignalSemaphores(stack.longs(
+                renderFinishedSemaphores.get(currentFrame),
+                TimelineSemaphoreManager.getTimelineSemaphore()
+            ));
+            submitInfo.pSignalSemaphoreValues(stack.longs(0, TimelineSemaphoreManager.getNextValue()));
                 vkResetFences(device, inFlightFences.get(currentFrame));
                 throw new RuntimeException("Failed to submit draw command buffer: %s".formatted(VkResult.decode(vkResult)));
             }
@@ -437,12 +433,11 @@ public class Renderer {
 
             vkResetFences(device, inFlightFences.get(currentFrame));
 
-            if ((vkResult = vkQueueSubmit(DeviceManager.getGraphicsQueue().vkQueue(), submitInfo, inFlightFences.get(currentFrame))) != VK_SUCCESS) {
-                vkResetFences(device, inFlightFences.get(currentFrame));
+            if ((vkResult = vkQueueSubmit(DeviceManager.getGraphicsQueue().vkQueue(), submitInfo, VK_NULL_HANDLE)) != VK_SUCCESS) {
                 throw new RuntimeException("Failed to submit flush command buffer: %s".formatted(VkResult.decode(vkResult)));
             }
 
-            vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.UINT64_MAX);
+            vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
 
             this.beginMainRenderPass(stack);
         }
@@ -520,6 +515,13 @@ public class Renderer {
     private void waitFences() {
         // Make sure there are no uploads/transitions scheduled
         Synchronization.INSTANCE.waitFences();
+
+        // Wait for timeline semaphore to ensure frame pacing
+        long waitValue = TimelineSemaphoreManager.getCurrentValue() - framesNum + 1;
+        if (waitValue > 0) {
+            TimelineSemaphoreManager.waitForValue(waitValue, 1_000_000_000L); // 1 second timeout
+        }
+
         Vulkan.getStagingBuffer().reset();
     }
 
@@ -545,7 +547,7 @@ public class Renderer {
                                             .pWaitDstStageMask(stack.ints(VK_PIPELINE_STAGE_ALL_COMMANDS_BIT));
 
             vkQueueSubmit(DeviceManager.getGraphicsQueue().vkQueue(), info, inFlightFences.get(currentFrame));
-            vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.UINT64_MAX);
+            vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
         }
             }
     @SuppressWarnings("UnreachableCode")

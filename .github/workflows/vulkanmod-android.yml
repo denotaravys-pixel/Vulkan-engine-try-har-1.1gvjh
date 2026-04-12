@@ -1,53 +1,95 @@
-name: VulkanMod Android CI/CD
+name: VulkanMod Android ARM64
 
 on:
   push:
-    branches: [dev, android-arm64]
-  pull_request:
-    branches: [dev]
+    branches: [android-arm64]
   workflow_dispatch:
 
 permissions:
   contents: write
-  pull-requests: write
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build-android:
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - name: Setup Java 21
+          ref: android-arm64
+
+      - name: Java 21
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-      - name: Cache Gradle
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          cache: 'gradle'
+
+      - name: Install shader tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y glslang-tools spirv-tools
+          glslc --version
+          spirv-val --version
+
+      - name: Compile shaders (GLSL → SPIR-V 1.1)
+        run: |
+          OUT="src/main/resources/assets/vulkanmod/shaders"
+          mkdir -p "$OUT"
+          FAIL=0
+          for f in shaders/src/*.vert shaders/src/*.vsh; do
+            [ -f "$f" ] || continue
+            name=$(basename "${f%.*}")
+            glslc -fshader-stage=vertex --target-env=vulkan1.1 -O \
+              "$f" -o "$OUT/${name}.vsh.spv" || FAIL=1
+          done
+          for f in shaders/src/*.frag shaders/src/*.fsh; do
+            [ -f "$f" ] || continue
+            name=$(basename "${f%.*}")
+            glslc -fshader-stage=fragment --target-env=vulkan1.1 -O \
+              "$f" -o "$OUT/${name}.fsh.spv" || FAIL=1
+          done
+          for spv in "$OUT"/*.spv; do
+            [ -f "$spv" ] || continue
+            spirv-val --target-env vulkan1.1 "$spv" \
+              && echo "VALID: $spv" || echo "INVALID: $spv"
+          done
+
+      - name: Read version
+        id: ver
+        run: |
+          V=$(grep "^mod_version" gradle.properties | cut -d= -f2 | tr -d ' ')
+          echo "v=$V" >> $GITHUB_OUTPUT
+
       - name: Build JAR
-        run: ./gradlew build
-      - name: Upload JAR Android
-        uses: actions/upload-artifact@v4
-        with:
-          name: VulkanMod-Android-${{ github.sha }}
-          path: build/libs/VulkanMod*.jar
-      - name: Create Release (on tag)
-        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          chmod +x gradlew
+          ./gradlew build --no-daemon --stacktrace
+          env:
+            JAVA_TOOL_OPTIONS: "-Xmx4g"
+
+      - name: Find JAR
+        id: jar
+        run: |
+          J=$(find build/libs/ -name "*.jar" \
+            ! -name "*-sources*" ! -name "*-dev*" | head -1)
+          echo "path=$J" >> $GITHUB_OUTPUT
+          echo "name=$(basename $J)" >> $GITHUB_OUTPUT
+
+      - name: Release (LATEST)
         uses: softprops/action-gh-release@v2
         with:
-          files: build/libs/VulkanMod*.jar
-          generate_release_notes: true
-
-  pr-check:
-    needs: build
+          tag_name: android-arm64-${{ github.run_number }}
+          name: "Android ARM64 Build #${{ github.run_number }}"
+          body: |
+            Mali-G52 | Vulkan 1.1 | MC ${{ steps.ver.outputs.v }}
+            Commit: ${{ github.sha }}
+            No shaderc | Direct draw | INHERIT composite alpha
+          files: ${{ steps.jar.outputs.path }}
+          make_latest: true
+          target_commitish: android-arm64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     permissions:

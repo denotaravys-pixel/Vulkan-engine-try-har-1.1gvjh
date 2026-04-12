@@ -372,10 +372,7 @@ public class WorldRenderer {
                     drawBuffers.bindBuffers(Renderer.getCommandBuffer(), pipeline, renderType, camX, camY, camZ);
                     renderer.uploadAndBindUBOs(pipeline);
 
-                    if (indirectDraw)
-                        drawBuffers.buildDrawBatchesIndirect(cameraPos, indirectBuffers[currentFrame], queue, renderType);
-                    else
-                        drawBuffers.buildDrawBatchesDirect(cameraPos, queue, renderType);
+                    drawBuffers.buildBatches(cameraPos, indirectDraw ? indirectBuffers[currentFrame] : null, queue, renderType);
                 }
             }
         }

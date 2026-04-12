@@ -13,8 +13,6 @@ import net.vulkanmod.vulkan.texture.SamplerManager;
 import net.vulkanmod.vulkan.util.VkResult;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryStack;
-import org.lwjgl.util.vma.VmaAllocatorCreateInfo;
-import org.lwjgl.util.vma.VmaVulkanFunctions;
 import org.lwjgl.vulkan.*;
 
 import java.nio.IntBuffer;
@@ -28,11 +26,10 @@ import static org.lwjgl.glfw.GLFWVulkan.glfwCreateWindowSurface;
 import static org.lwjgl.glfw.GLFWVulkan.glfwGetRequiredInstanceExtensions;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
-import static org.lwjgl.util.vma.Vma.vmaCreateAllocator;
-import static org.lwjgl.util.vma.Vma.vmaDestroyAllocator;
 import static org.lwjgl.vulkan.EXTDebugUtils.*;
 import static org.lwjgl.vulkan.KHRDynamicRendering.VK_KHR_DYNAMIC_RENDERING_EXTENSION_NAME;
 import static org.lwjgl.vulkan.KHRSwapchain.VK_KHR_SWAPCHAIN_EXTENSION_NAME;
+import static org.lwjgl.vulkan.KHRTimelineSemaphore.VK_KHR_TIMELINE_SEMAPHORE_EXTENSION_NAME;
 import static org.lwjgl.vulkan.VK10.*;
 import static org.lwjgl.vulkan.VK11.VK_API_VERSION_1_1;
 
@@ -55,7 +52,10 @@ public class Vulkan {
     public static final Set<String> REQUIRED_EXTENSION = getRequiredExtensionSet();
 
     private static Set<String> getRequiredExtensionSet() {
-        ArrayList<String> extensions = new ArrayList<>(List.of(VK_KHR_SWAPCHAIN_EXTENSION_NAME));
+        ArrayList<String> extensions = new ArrayList<>(List.of(
+            VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+            VK_KHR_TIMELINE_SEMAPHORE_EXTENSION_NAME
+        ));
         if (DYNAMIC_RENDERING) {
             extensions.add(VK_KHR_DYNAMIC_RENDERING_EXTENSION_NAME);
         }

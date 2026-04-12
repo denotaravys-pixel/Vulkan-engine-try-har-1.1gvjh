@@ -16,6 +16,7 @@ import static org.lwjgl.vulkan.VK10.*;
 public class MemoryTypes {
     public static MemoryType GPU_MEM;
     public static MemoryType HOST_MEM;
+    public static MemoryType LAZY_DEPTH_MEM;
 
     public static void createMemoryTypes() {
 
@@ -30,6 +31,11 @@ public class MemoryTypes {
 
             if (propertyFlags == (VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT)) {
                 HOST_MEM = new HostCoherentMemory(memoryType, heap);
+            }
+
+            // Check for lazily allocated memory (perfect for depth buffers on Mali)
+            if ((propertyFlags & VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT) != 0) {
+                LAZY_DEPTH_MEM = new LazyDepthMemory(memoryType, heap);
             }
         }
 
@@ -50,12 +56,18 @@ public class MemoryTypes {
                 HOST_MEM = new HostLocalFallbackMemory(memoryType, heap);
             }
 
+            // Check for lazily allocated memory in UMA systems
+            if ((memoryType.propertyFlags() & VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT) != 0) {
+                LAZY_DEPTH_MEM = new LazyDepthMemory(memoryType, heap);
+            }
+
             if (GPU_MEM != null && HOST_MEM != null)
                 return;
         }
 
         // Último recurso: usar memória de host para ambos
         GPU_MEM = HOST_MEM;
+        LAZY_DEPTH_MEM = GPU_MEM; // Fallback to regular GPU mem if lazy not available
     }
 
     public static class DeviceLocalMemory extends MemoryType {
@@ -165,6 +177,38 @@ public class MemoryTypes {
             MemoryManager.getInstance().createBuffer(buffer, size,
                     VK_BUFFER_USAGE_TRANSFER_DST_BIT | VK_BUFFER_USAGE_TRANSFER_SRC_BIT | buffer.usage,
                     VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT);
+        }
+    }
+
+    static class LazyDepthMemory extends MemoryType {
+
+        LazyDepthMemory(VkMemoryType vkMemoryType, VkMemoryHeap vkMemoryHeap) {
+            super(Type.LAZY_DEPTH, vkMemoryType, vkMemoryHeap);
+        }
+
+        @Override
+        public void createBuffer(Buffer buffer, long size) {
+            // For depth buffers, use lazily allocated memory to avoid bandwidth cost
+            MemoryManager.getInstance().createBuffer(buffer, size,
+                    buffer.usage,
+                    VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_LAZILY_ALLOCATED_BIT);
+        }
+
+        @Override
+        public void copyToBuffer(Buffer buffer, ByteBuffer src, long size, long srcOffset, long dstOffset) {
+            // Lazy memory should not be written to directly - only used for depth/stencil
+            throw new UnsupportedOperationException("Lazy depth memory should not be written to");
+        }
+
+        @Override
+        public void copyFromBuffer(Buffer buffer, long bufferSize, ByteBuffer byteBuffer) {
+            // Lazy memory should not be read back
+            throw new UnsupportedOperationException("Lazy depth memory should not be read back");
+        }
+
+        @Override
+        public boolean mappable() {
+            return false;
         }
     }
 }

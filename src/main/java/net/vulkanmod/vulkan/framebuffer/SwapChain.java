@@ -119,7 +119,19 @@ public class SwapChain extends Framebuffer {
             }
 
             createInfo.preTransform(surfaceProperties.capabilities.currentTransform());
-            createInfo.compositeAlpha(VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR);
+            int compositeAlpha;
+            if ((surfaceProperties.capabilities.supportedCompositeAlpha()
+                    & VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR) != 0) {
+                compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
+            } else if ((surfaceProperties.capabilities.supportedCompositeAlpha()
+                    & VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR) != 0) {
+                compositeAlpha = VK_COMPOSITE_ALPHA_INHERIT_BIT_KHR;
+            } else {
+                compositeAlpha = Integer.numberOfTrailingZeros(
+                    surfaceProperties.capabilities.supportedCompositeAlpha());
+                System.err.println("[VULKANMOD] compositeAlpha fallback: " + compositeAlpha);
+            }
+            createInfo.compositeAlpha(compositeAlpha);
             createInfo.presentMode(presentMode);
             createInfo.clipped(true);
 
