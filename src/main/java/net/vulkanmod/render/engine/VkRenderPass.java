@@ -28,6 +28,7 @@ public class VkRenderPass implements RenderPass {
     private final VkCommandEncoder encoder;
     private final boolean hasDepthTexture;
     private boolean closed;
+
     @Nullable
     protected RenderPipeline pipeline;
     protected final GpuBuffer[] vertexBuffers = new GpuBuffer[1];
@@ -55,7 +56,6 @@ public class VkRenderPass implements RenderPass {
             throw new IllegalStateException("Can't use a closed render pass");
         } else {
             this.pushedDebugGroups++;
-//            this.encoder.getDevice().debugLabels().pushDebugGroup(supplier);
         }
     }
 
@@ -67,19 +67,36 @@ public class VkRenderPass implements RenderPass {
             throw new IllegalStateException("Can't pop more debug groups than was pushed!");
         } else {
             this.pushedDebugGroups--;
-//            this.encoder.getDevice().debugLabels().popDebugGroup();
         }
     }
 
+    /**
+     * FIX ANDROID — setPipeline
+     *
+     * Guard anterior em VkGpuDevice.compilePipeline(RenderPipeline):
+     *   if (Platform.isAndroid()) return;
+     * Resultado: o compilePipeline chamado aqui era bloqueado em Android,
+     * o pipeline ficava null e todos os draws eram skipped → ecrã negro.
+     *
+     * Novo comportamento (após fix em VkGpuDevice):
+     * - compilePipeline() já não tem guard Android
+     * - Tenta criar pipeline para cada RenderPipeline do Minecraft
+     * - Se SPIRVUtils conseguir SPIR-V → pipeline criado → render OK
+     * - Se não → failedPipelines regista a falha → sem flood de retentativas
+     *
+     * Este método não precisa de alterações — apenas depende do VkGpuDevice corrigido.
+     */
     @Override
     public void setPipeline(RenderPipeline renderPipeline) {
         if (this.pipeline == null || this.pipeline != renderPipeline) {
             this.dirtyUniforms.addAll(this.uniforms.keySet());
         }
 
-
         this.pipeline = renderPipeline;
 
+        // Compilação lazy: se o pipeline ainda não foi criado (ou tentado),
+        // o VkGpuDevice.compilePipeline() trata de tentar criar e regista
+        // falhas no failedPipelines para evitar retentativas excessivas.
         if (ExtendedRenderPipeline.of(renderPipeline).getPipeline() == null) {
             this.encoder.getDevice().compilePipeline(renderPipeline);
         }
@@ -143,7 +160,9 @@ public class VkRenderPass implements RenderPass {
         return this.scissorState.height();
     }
 
-    public ScissorState getScissorState() { return this.scissorState; }
+    public ScissorState getScissorState() {
+        return this.scissorState;
+    }
 
     @Override
     public void setVertexBuffer(int i, GpuBuffer gpuBuffer) {
@@ -209,4 +228,3 @@ public class VkRenderPass implements RenderPass {
         return pipeline;
     }
 }
-
