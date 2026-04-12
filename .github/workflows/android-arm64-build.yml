@@ -1,0 +1,119 @@
+name: Android ARM64 Build & Release
+
+on:
+  push:
+    branches: [ android-arm64 ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: android-arm64
+
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Verify Java
+        run: java -version
+
+      - name: Install SPV tools
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y glslang-tools spirv-tools
+          glslangValidator --version || true
+          spirv-val --version || true
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Validate existing SPV shaders
+        run: |
+          echo "=== SPV shaders encontrados ==="
+          find src/main/resources -name "*.spv" | wc -l
+          find src/main/resources -name "*.spv" | while read f; do
+            spirv-val "$f" && echo "✅ $f" || echo "❌ INVALID: $f"
+          done || true
+
+      - name: Build
+        run: |
+          ./gradlew build --no-daemon --stacktrace 2>&1 | tee build_full_log.txt
+          echo "EXIT_CODE=${PIPESTATUS[0]}" >> $GITHUB_ENV
+
+      - name: Extract errors
+        if: always()
+        run: |
+          grep -E "(error:|ERROR|FAILED|Exception|cannot find symbol)" \
+            build_full_log.txt > build_errors_only.txt || true
+          echo "=== RESUMO ===" >> build_errors_only.txt
+          echo "Erros: $(grep -c 'error:' build_full_log.txt || echo 0)" >> build_errors_only.txt
+          echo "Tasks falhadas: $(grep -c 'FAILED' build_full_log.txt || echo 0)" >> build_errors_only.txt
+          if grep -q "BUILD SUCCESSFUL" build_full_log.txt; then
+            echo "RESULTADO: ✅ BUILD SUCCESSFUL" >> build_errors_only.txt
+          else
+            echo "RESULTADO: ❌ BUILD FAILED" >> build_errors_only.txt
+          fi
+          cat build_errors_only.txt
+
+      - name: Upload logs (sempre, mesmo em falha)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs-${{ github.run_number }}
+          path: |
+            build_full_log.txt
+            build_errors_only.txt
+          retention-days: 14
+
+      - name: Upload JAR se build OK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: VulkanMod-Android-ARM64-${{ github.run_number }}
+          path: build/libs/*.jar
+          retention-days: 30
+
+      - name: Criar Release
+        if: success()
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-arm64-${{ github.run_number }}
+          name: "VulkanMod Android ARM64 — Build ${{ github.run_number }}"
+          body: |
+            ## Build Automático — Android ARM64
+            **Branch:** android-arm64
+            **Commit:** ${{ github.sha }}
+            **Data:** ${{ github.event.head_commit.timestamp }}
+
+            ### Hardware alvo
+            - GPU: Mali-G52 (Vulkan 1.1)
+            - Launcher: Zalith / BATTLY
+            - Arquitectura: Vulkan (mundo) + OpenGL ES (GUI)
+
+            ### Fixes neste build
+            - ✅ shaderc removido das dependências
+            - ✅ SPIRVUtils.loadSPV() com paths correctos
+            - ✅ Null guard em VkCommandEncoder.setupUniforms
+            - ✅ AndroidConfig.java — arquitectura híbrida
+            - ✅ Workflow android-arm64-build.yml: Java 21, SPV tools, logs, release auto
+
+            ### Crash corrigido:
+            NPE: pipeline.getBuffers() porque pipeline=null
+            Causa: shaderc sem natives ARM64 → compileShader() retorna null
+            Fix: loadSPV() carrega .spv do classpath, sem shaderc
+
+            Refs: latest.log crash em VkCommandEncoder.java:790
+          files: build/libs/*.jar
+          make_latest: true
+          target_commitish: android-arm64

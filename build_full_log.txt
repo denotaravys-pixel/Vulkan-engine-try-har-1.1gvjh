@@ -1,0 +1,851 @@
+Initialized native services in: /home/codespace/.gradle/native
+Initialized jansi services in: /home/codespace/.gradle/native
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.14.3/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Starting process 'Gradle build daemon'. Working directory: /home/codespace/.gradle/daemon/8.14.3 Command: /usr/lib/jvm/java-21-openjdk-amd64/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED -Xmx3G -Dfile.encoding=UTF-8 -Duser.country -Duser.language=en -Duser.variant -cp /home/codespace/.gradle/wrapper/dists/gradle-8.14.3-bin/cv11ve7ro1n3o1j4so8xd9n66/gradle-8.14.3/lib/gradle-daemon-main-8.14.3.jar -javaagent:/home/codespace/.gradle/wrapper/dists/gradle-8.14.3-bin/cv11ve7ro1n3o1j4so8xd9n66/gradle-8.14.3/lib/agents/gradle-instrumentation-agent-8.14.3.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 8.14.3
+Successfully started process 'Gradle build daemon'
+An attempt to start the daemon took 1.176 secs.
+The client will now receive all logging from the daemon (pid: 23936). The daemon log file: /home/codespace/.gradle/daemon/8.14.3/daemon-23936.out.log
+Daemon will be stopped at the end of the build 
+Using 4 worker leases.
+Received JVM installation metadata from '/usr/lib/jvm/java-21-openjdk-amd64': {JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64, JAVA_VERSION=21.0.10, JAVA_VENDOR=Ubuntu, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=21.0.10+7-Ubuntu-124.04, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=21.0.10+7-Ubuntu-124.04, VM_VENDOR=Ubuntu, OS_ARCH=amd64}
+Watching the file system is configured to be enabled if available
+Not watching /workspaces/Vulkan-engine-try-har-1.1 since the file system is not supported
+File system watching is active
+Starting Build
+Settings evaluated using settings file '/workspaces/Vulkan-engine-try-har-1.1/settings.gradle'.
+Projects loaded. Root project using build file '/workspaces/Vulkan-engine-try-har-1.1/build.gradle'.
+Included projects: [root project 'Vulkan-engine-try-har-1.1']
+
+> Configure project :
+Evaluating root project 'Vulkan-engine-try-har-1.1' using build file '/workspaces/Vulkan-engine-try-har-1.1/build.gradle'.
+Resolved plugin [id: 'fabric-loom', version: '1.12-SNAPSHOT']
+Resolved plugin [id: 'maven-publish']
+Fabric Loom: 1.12.7
+(kotlin.metadata.jvm.KotlinClassMetadata) with version (2.0.21-release-482) was loaded from (/home/codespace/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-metadata-jvm/2.0.21/dd8294df485f71ba735d14173a286e3f3eef44f9/kotlin-metadata-jvm-2.0.21.jar)
+(org.objectweb.asm.ClassVisitor) with version (9.9) was loaded from (/home/codespace/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/9.9/c29635c8a7afa03d74b33c1884df8abb2b3f3dcc/asm-9.9.jar)
+(org.objectweb.asm.tree.analysis.Analyzer) with version (9.9) was loaded from (/home/codespace/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/9.9/bf4fa6e66638851c1cd22c2caea0c3ee5d5f437/asm-analysis-9.9.jar)
+(org.objectweb.asm.commons.ClassRemapper) with version (9.9) was loaded from (/home/codespace/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/9.9/db9165a3bf908ded6b08612d583a15d1d0c7bda0/asm-commons-9.9.jar)
+(org.objectweb.asm.tree.ClassNode) with version (9.9) was loaded from (/home/codespace/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/9.9/f8de6eead6d24dd0f45bd065bbe112b2cda6ea21/asm-tree-9.9.jar)
+(org.objectweb.asm.util.ASMifier) with version (9.9) was loaded from (/home/codespace/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-util/9.9/42fdfc0508b43807c8078d6e82ecff2ce2112ae8/asm-util-9.9.jar)
+(com.google.gson.Gson) with version (null) was loaded from (/home/codespace/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10.1/b3add478d4382b78ea20b1671390a858002feb6c/gson-2.10.1.jar)
+Using cached Minecraft jars
+:Extracting server jar from bootstrap
+Evaluating layer mapping: loom:mappings:layered+hash.2198
+:setting up loom dependencies
+Mod dependency options: {"__inlineRefmap__":false,"__mappings__":"loom.mappings.1_21_10.layered+hash.2198-v2"}
+Applying installer data from /home/codespace/.gradle/caches/modules-2/files-2.1/net.fabricmc/fabric-loader/0.17.3/deafaba5de4d9bbd76105783ff4e21ce0773874f/fabric-loader-0.17.3.jar
+Found another installer JSON in (/home/codespace/.gradle/caches/modules-2/files-2.1/net.fabricmc/fabric-loader/0.17.3/deafaba5de4d9bbd76105783ff4e21ce0773874f/fabric-loader-0.17.3.jar), ignoring
+All projects evaluated.
+Task name matched 'clean'
+Task name matched 'build'
+Selected primary task 'clean' from project :
+Selected primary task 'build' from project :
+Tasks to be executed: [task ':clean', task ':exportClasspath', task ':compileJava', task ':checkSpirvShaders', task ':processResources', task ':classes', task ':jar', task ':processIncludeJars', task ':remapJar', task ':sourcesJar', task ':remapSourcesJar', task ':assemble', task ':compileTestJava', task ':processTestResources', task ':testClasses', task ':test', task ':validateAccessWidener', task ':check', task ':build']
+Tasks that were excluded: []
+Resolve mutations for :clean (Thread[#166,Execution worker,5,main]) started.
+:clean (Thread[#166,Execution worker,5,main]) started.
+destroyer locations for task group 0 (Thread[#165,included builds,5,main]) started.
+
+> Task :clean
+Caching disabled for task ':clean' because:
+  Build cache is disabled
+Task ':clean' is not up-to-date because:
+  Task has not declared any outputs despite executing actions.
+Resolve mutations for :exportClasspath (Thread[#166,Execution worker,5,main]) started.
+:exportClasspath (Thread[#166,Execution worker,5,main]) started.
+Resolve mutations for :compileJava (Thread[#165,included builds,5,main]) started.
+:compileJava (Thread[#165,included builds,5,main]) started.
+
+> Task :exportClasspath
+Caching disabled for task ':exportClasspath' because:
+  Build cache is disabled
+  Caching has not been enabled for the task
+Task ':exportClasspath' is not up-to-date because:
+  Output property 'output' file /workspaces/Vulkan-engine-try-har-1.1/build/export_classpath.json has been removed.
+
+> Task :compileJava
+Caching disabled for task ':compileJava' because:
+  Build cache is disabled
+Task ':compileJava' is not up-to-date because:
+  Task has failed previously.
+The input changes require a full rebuild for incremental task ':compileJava'.
+Compilation mode: in-process compilation
+Full recompilation is required because no incremental change information is available. This is usually caused by clean builds or changing compiler arguments.
+Compiling with toolchain '/usr/lib/jvm/java-21-openjdk-amd64'.
+Compiling with JDK Java compiler API.
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/texture/ASTCTextureLoader.java:14: error: cannot find symbol
+        VkPhysicalDeviceFeatures features = DeviceManager.getPhysicalDeviceFeatures();
+                                                         ^
+  symbol:   method getPhysicalDeviceFeatures()
+  location: class DeviceManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:102: error: cannot find symbol
+                return caps.GL_ARM_shader_framebuffer_fetch;
+                           ^
+  symbol:   variable GL_ARM_shader_framebuffer_fetch
+  location: variable caps of type GLCapabilities
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:104: error: cannot find symbol
+                return caps.GL_EXT_shader_pixel_local_storage;
+                           ^
+  symbol:   variable GL_EXT_shader_pixel_local_storage
+  location: variable caps of type GLCapabilities
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:46: error: constructor Buffer in class Buffer cannot be applied to given types;
+        Buffer buffer = new Buffer(size,
+                        ^
+  required: int,MemoryType
+  found:    int,int,int
+  reason: actual and formal argument lists differ in length
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:50: error: cannot find symbol
+        MemoryManager.getInstance().addBuffer(buffer);
+                                   ^
+  symbol:   method addBuffer(Buffer)
+  location: class MemoryManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+                   .setOps(VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE);
+                           ^
+  symbol:   variable VK_ATTACHMENT_LOAD_OP_CLEAR
+  location: class VkGlFramebuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+                   .setOps(VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE);
+                                                        ^
+  symbol:   variable VK_ATTACHMENT_STORE_OP_STORE
+  location: class VkGlFramebuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:15: error: cannot find symbol
+        if (image.getMipLevels() <= 1) return;
+                 ^
+  symbol:   method getMipLevels()
+  location: variable image of type VulkanImage
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:17: error: cannot find symbol
+        try (MemoryStack stack = stackPush()) {
+                                 ^
+  symbol:   method stackPush()
+  location: class GPUMipmapGenerator
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:39: error: cannot find symbol
+            int mipWidth = image.getWidth();
+                                ^
+  symbol:   method getWidth()
+  location: variable image of type VulkanImage
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:40: error: cannot find symbol
+            int mipHeight = image.getHeight();
+                                 ^
+  symbol:   method getHeight()
+  location: variable image of type VulkanImage
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:42: error: cannot find symbol
+            for (int i = 1; i < image.getMipLevels(); i++) {
+                                     ^
+  symbol:   method getMipLevels()
+  location: variable image of type VulkanImage
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:50: error: incompatible types: long cannot be converted to VkCommandBuffer
+                vkCmdPipelineBarrier(commandBuffer,
+                                     ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:62: error: incompatible types: long cannot be converted to VkCommandBuffer
+                vkCmdBlitImage(commandBuffer,
+                               ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:73: error: incompatible types: long cannot be converted to VkCommandBuffer
+                vkCmdPipelineBarrier(commandBuffer,
+                                     ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:82: error: cannot find symbol
+            barrier.subresourceRange().baseMipLevel(image.getMipLevels() - 1);
+                                                         ^
+  symbol:   method getMipLevels()
+  location: variable image of type VulkanImage
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:88: error: incompatible types: long cannot be converted to VkCommandBuffer
+            vkCmdPipelineBarrier(commandBuffer,
+                                 ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:20: error: constructor Buffer in class Buffer cannot be applied to given types;
+        super(size, usage | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+        ^
+  required: int,MemoryType
+  found:    long,int,int
+  reason: actual and formal argument lists differ in length
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:27: error: cannot find symbol
+        MemoryManager.getInstance().addBuffer(this);
+                                   ^
+  symbol:   method addBuffer(PersistentMappedBuffer)
+  location: class MemoryManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:41: error: method does not override or implement a method from a supertype
+    @Override
+    ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:47: error: cannot find symbol
+        super.free();
+             ^
+  symbol: method free()
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:35: error: method initialDataSize in class VkPipelineCacheCreateInfo cannot be applied to given types;
+                cacheInfo.initialDataSize(cacheData.length);
+                         ^
+  required: no arguments
+  found:    int
+  reason: actual and formal argument lists differ in length
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:36: error: incompatible types: long cannot be converted to ByteBuffer
+                cacheInfo.pInitialData(MemoryUtil.memAddress(cacheBuffer));
+                                                            ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:42: error: no suitable method found for vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,<null>,PointerBuffer)
+            int result = vkCreatePipelineCache(Vulkan.getVkDevice(), cacheInfo, null, pCache);
+                         ^
+    method VK10.vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,VkAllocationCallbacks,long[]) is not applicable
+      (argument mismatch; PointerBuffer cannot be converted to long[])
+    method VK10.vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,VkAllocationCallbacks,LongBuffer) is not applicable
+      (argument mismatch; PointerBuffer cannot be converted to LongBuffer)
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:64: error: incompatible types: long cannot be converted to ByteBuffer
+            vkGetPipelineCacheData(Vulkan.getVkDevice(), pipelineCache, pDataSize, MemoryUtil.memAddress(data));
+                                                                                                        ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:21: error: cannot find symbol
+            typeInfo.sType(VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO);
+                           ^
+  symbol:   variable VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO
+  location: class TimelineSemaphoreManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:22: error: cannot find symbol
+            typeInfo.semaphoreType(VK_SEMAPHORE_TYPE_TIMELINE);
+                                   ^
+  symbol:   variable VK_SEMAPHORE_TYPE_TIMELINE
+  location: class TimelineSemaphoreManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:60: error: cannot find symbol
+            waitInfo.sType(VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO);
+                           ^
+  symbol:   variable VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO
+  location: class TimelineSemaphoreManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:65: error: cannot find symbol
+            vkWaitSemaphores(Vulkan.getVkDevice(), waitInfo, timeoutNs);
+            ^
+  symbol:   method vkWaitSemaphores(VkDevice,VkSemaphoreWaitInfo,long)
+  location: class TimelineSemaphoreManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:236: error: cannot find symbol
+            recreateSwapChain();
+            ^
+  symbol:   method recreateSwapChain()
+  location: class Renderer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:265: error: cannot find symbol
+        vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+                                                                        ^
+  symbol:   variable VUtil
+  location: class Renderer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:281: error: cannot find symbol
+            int vkResult = vkAcquireNextImageKHR(device, swapChain.getId(), VUtil.UINT64_MAX,
+                                                                            ^
+  symbol:   variable VUtil
+  location: class Renderer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:378: error: cannot find symbol
+            submitInfo.pSignalSemaphoreValues(stack.longs(0, TimelineSemaphoreManager.getNextValue()));
+                      ^
+  symbol:   method pSignalSemaphoreValues(LongBuffer)
+  location: variable submitInfo of type VkSubmitInfo
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:452: error: cannot find symbol
+            vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+                                                                            ^
+  symbol:   variable VUtil
+  location: class Renderer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:564: error: cannot find symbol
+            vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+                                                                            ^
+  symbol:   variable VUtil
+  location: class Renderer
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+35 errors
+
+> Task :compileJava FAILED
+
+[Incubating] Problems report is available at: file:///workspaces/Vulkan-engine-try-har-1.1/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileJava'.
+> Compilation failed; see the compiler output below.
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:46: error: constructor Buffer in class Buffer cannot be applied to given types;
+          Buffer buffer = new Buffer(size,
+                          ^
+    required: int,MemoryType
+    found:    int,int,int
+    reason: actual and formal argument lists differ in length
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:20: error: constructor Buffer in class Buffer cannot be applied to given types;
+          super(size, usage | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+          ^
+    required: int,MemoryType
+    found:    long,int,int
+    reason: actual and formal argument lists differ in length
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:35: error: method initialDataSize in class VkPipelineCacheCreateInfo cannot be applied to given types;
+                  cacheInfo.initialDataSize(cacheData.length);
+                           ^
+    required: no arguments
+    found:    int
+    reason: actual and formal argument lists differ in length
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:42: error: no suitable method found for vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,<null>,PointerBuffer)
+              int result = vkCreatePipelineCache(Vulkan.getVkDevice(), cacheInfo, null, pCache);
+                           ^
+      method VK10.vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,VkAllocationCallbacks,long[]) is not applicable
+        (argument mismatch; PointerBuffer cannot be converted to long[])
+      method VK10.vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,VkAllocationCallbacks,LongBuffer) is not applicable
+        (argument mismatch; PointerBuffer cannot be converted to LongBuffer)
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:47: error: cannot find symbol
+          super.free();
+               ^
+    symbol: method free()
+  Note: Recompile with -Xlint:deprecation for details.
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:50: error: incompatible types: long cannot be converted to VkCommandBuffer
+                  vkCmdPipelineBarrier(commandBuffer,
+                                       ^
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:62: error: incompatible types: long cannot be converted to VkCommandBuffer
+                  vkCmdBlitImage(commandBuffer,
+                                 ^
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:73: error: incompatible types: long cannot be converted to VkCommandBuffer
+                  vkCmdPipelineBarrier(commandBuffer,
+                                       ^
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:88: error: incompatible types: long cannot be converted to VkCommandBuffer
+              vkCmdPipelineBarrier(commandBuffer,
+                                   ^
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:36: error: incompatible types: long cannot be converted to ByteBuffer
+                  cacheInfo.pInitialData(MemoryUtil.memAddress(cacheBuffer));
+                                                              ^
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:64: error: incompatible types: long cannot be converted to ByteBuffer
+              vkGetPipelineCacheData(Vulkan.getVkDevice(), pipelineCache, pDataSize, MemoryUtil.memAddress(data));
+                                                                                                          ^
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:102: error: cannot find symbol
+                  return caps.GL_ARM_shader_framebuffer_fetch;
+                             ^
+    symbol:   variable GL_ARM_shader_framebuffer_fetch
+    location: variable caps of type GLCapabilities
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:104: error: cannot find symbol
+                  return caps.GL_EXT_shader_pixel_local_storage;
+                             ^
+    symbol:   variable GL_EXT_shader_pixel_local_storage
+    location: variable caps of type GLCapabilities
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+                     .setOps(VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE);
+                             ^
+    symbol:   variable VK_ATTACHMENT_LOAD_OP_CLEAR
+    location: class VkGlFramebuffer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+                     .setOps(VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE);
+                                                          ^
+    symbol:   variable VK_ATTACHMENT_STORE_OP_STORE
+    location: class VkGlFramebuffer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:21: error: cannot find symbol
+              typeInfo.sType(VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO);
+                             ^
+    symbol:   variable VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO
+    location: class TimelineSemaphoreManager
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:22: error: cannot find symbol
+              typeInfo.semaphoreType(VK_SEMAPHORE_TYPE_TIMELINE);
+                                     ^
+    symbol:   variable VK_SEMAPHORE_TYPE_TIMELINE
+    location: class TimelineSemaphoreManager
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:60: error: cannot find symbol
+              waitInfo.sType(VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO);
+                             ^
+    symbol:   variable VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO
+    location: class TimelineSemaphoreManager
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:265: error: cannot find symbol
+          vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+                                                                          ^
+    symbol:   variable VUtil
+    location: class Renderer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:281: error: cannot find symbol
+              int vkResult = vkAcquireNextImageKHR(device, swapChain.getId(), VUtil.UINT64_MAX,
+                                                                              ^
+    symbol:   variable VUtil
+    location: class Renderer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:452: error: cannot find symbol
+              vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+                                                                              ^
+    symbol:   variable VUtil
+    location: class Renderer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:564: error: cannot find symbol
+              vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+                                                                              ^
+    symbol:   variable VUtil
+    location: class Renderer
+  Note: Recompile with -Xlint:unchecked for details.
+  Note: Some input files use or override a deprecated API.
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:41: error: method does not override or implement a method from a supertype
+      @Override
+      ^
+  Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+  Note: Some input files use unchecked or unsafe operations.
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/texture/ASTCTextureLoader.java:14: error: cannot find symbol
+          VkPhysicalDeviceFeatures features = DeviceManager.getPhysicalDeviceFeatures();
+                                                           ^
+    symbol:   method getPhysicalDeviceFeatures()
+    location: class DeviceManager
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:50: error: cannot find symbol
+          MemoryManager.getInstance().addBuffer(buffer);
+                                     ^
+    symbol:   method addBuffer(Buffer)
+    location: class MemoryManager
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:15: error: cannot find symbol
+          if (image.getMipLevels() <= 1) return;
+                   ^
+    symbol:   method getMipLevels()
+    location: variable image of type VulkanImage
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:17: error: cannot find symbol
+          try (MemoryStack stack = stackPush()) {
+                                   ^
+    symbol:   method stackPush()
+    location: class GPUMipmapGenerator
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:39: error: cannot find symbol
+              int mipWidth = image.getWidth();
+                                  ^
+    symbol:   method getWidth()
+    location: variable image of type VulkanImage
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:40: error: cannot find symbol
+              int mipHeight = image.getHeight();
+                                   ^
+    symbol:   method getHeight()
+    location: variable image of type VulkanImage
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:42: error: cannot find symbol
+              for (int i = 1; i < image.getMipLevels(); i++) {
+                                       ^
+    symbol:   method getMipLevels()
+    location: variable image of type VulkanImage
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:82: error: cannot find symbol
+              barrier.subresourceRange().baseMipLevel(image.getMipLevels() - 1);
+                                                           ^
+    symbol:   method getMipLevels()
+    location: variable image of type VulkanImage
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:27: error: cannot find symbol
+          MemoryManager.getInstance().addBuffer(this);
+                                     ^
+    symbol:   method addBuffer(PersistentMappedBuffer)
+    location: class MemoryManager
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:65: error: cannot find symbol
+              vkWaitSemaphores(Vulkan.getVkDevice(), waitInfo, timeoutNs);
+              ^
+    symbol:   method vkWaitSemaphores(VkDevice,VkSemaphoreWaitInfo,long)
+    location: class TimelineSemaphoreManager
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:236: error: cannot find symbol
+              recreateSwapChain();
+              ^
+    symbol:   method recreateSwapChain()
+    location: class Renderer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:378: error: cannot find symbol
+              submitInfo.pSignalSemaphoreValues(stack.longs(0, TimelineSemaphoreManager.getNextValue()));
+                        ^
+    symbol:   method pSignalSemaphoreValues(LongBuffer)
+    location: variable submitInfo of type VkSubmitInfo
+  35 errors
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights.
+
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':compileJava'.
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.lambda$executeIfValid$1(ExecuteActionsTaskExecuter.java:130)
+	at org.gradle.internal.Try$Failure.ifSuccessfulOrElse(Try.java:293)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:128)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:41)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+Caused by: org.gradle.api.internal.tasks.compile.CompilationFailedException: Compilation failed; see the compiler output below.
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:46: error: constructor Buffer in class Buffer cannot be applied to given types;
+        Buffer buffer = new Buffer(size,
+                        ^
+  required: int,MemoryType
+  found:    int,int,int
+  reason: actual and formal argument lists differ in length
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:20: error: constructor Buffer in class Buffer cannot be applied to given types;
+        super(size, usage | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+        ^
+  required: int,MemoryType
+  found:    long,int,int
+  reason: actual and formal argument lists differ in length
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:35: error: method initialDataSize in class VkPipelineCacheCreateInfo cannot be applied to given types;
+                cacheInfo.initialDataSize(cacheData.length);
+                         ^
+  required: no arguments
+  found:    int
+  reason: actual and formal argument lists differ in length
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:42: error: no suitable method found for vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,<null>,PointerBuffer)
+            int result = vkCreatePipelineCache(Vulkan.getVkDevice(), cacheInfo, null, pCache);
+                         ^
+    method VK10.vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,VkAllocationCallbacks,long[]) is not applicable
+      (argument mismatch; PointerBuffer cannot be converted to long[])
+    method VK10.vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,VkAllocationCallbacks,LongBuffer) is not applicable
+      (argument mismatch; PointerBuffer cannot be converted to LongBuffer)
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:47: error: cannot find symbol
+        super.free();
+             ^
+  symbol: method free()
+Note: Recompile with -Xlint:deprecation for details.
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:50: error: incompatible types: long cannot be converted to VkCommandBuffer
+                vkCmdPipelineBarrier(commandBuffer,
+                                     ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:62: error: incompatible types: long cannot be converted to VkCommandBuffer
+                vkCmdBlitImage(commandBuffer,
+                               ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:73: error: incompatible types: long cannot be converted to VkCommandBuffer
+                vkCmdPipelineBarrier(commandBuffer,
+                                     ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:88: error: incompatible types: long cannot be converted to VkCommandBuffer
+            vkCmdPipelineBarrier(commandBuffer,
+                                 ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:36: error: incompatible types: long cannot be converted to ByteBuffer
+                cacheInfo.pInitialData(MemoryUtil.memAddress(cacheBuffer));
+                                                            ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:64: error: incompatible types: long cannot be converted to ByteBuffer
+            vkGetPipelineCacheData(Vulkan.getVkDevice(), pipelineCache, pDataSize, MemoryUtil.memAddress(data));
+                                                                                                        ^
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:102: error: cannot find symbol
+                return caps.GL_ARM_shader_framebuffer_fetch;
+                           ^
+  symbol:   variable GL_ARM_shader_framebuffer_fetch
+  location: variable caps of type GLCapabilities
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:104: error: cannot find symbol
+                return caps.GL_EXT_shader_pixel_local_storage;
+                           ^
+  symbol:   variable GL_EXT_shader_pixel_local_storage
+  location: variable caps of type GLCapabilities
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+                   .setOps(VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE);
+                           ^
+  symbol:   variable VK_ATTACHMENT_LOAD_OP_CLEAR
+  location: class VkGlFramebuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+                   .setOps(VK_ATTACHMENT_LOAD_OP_CLEAR, VK_ATTACHMENT_STORE_OP_STORE);
+                                                        ^
+  symbol:   variable VK_ATTACHMENT_STORE_OP_STORE
+  location: class VkGlFramebuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:21: error: cannot find symbol
+            typeInfo.sType(VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO);
+                           ^
+  symbol:   variable VK_STRUCTURE_TYPE_SEMAPHORE_TYPE_CREATE_INFO
+  location: class TimelineSemaphoreManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:22: error: cannot find symbol
+            typeInfo.semaphoreType(VK_SEMAPHORE_TYPE_TIMELINE);
+                                   ^
+  symbol:   variable VK_SEMAPHORE_TYPE_TIMELINE
+  location: class TimelineSemaphoreManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:60: error: cannot find symbol
+            waitInfo.sType(VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO);
+                           ^
+  symbol:   variable VK_STRUCTURE_TYPE_SEMAPHORE_WAIT_INFO
+  location: class TimelineSemaphoreManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:265: error: cannot find symbol
+        vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+                                                                        ^
+  symbol:   variable VUtil
+  location: class Renderer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:281: error: cannot find symbol
+            int vkResult = vkAcquireNextImageKHR(device, swapChain.getId(), VUtil.UINT64_MAX,
+                                                                            ^
+  symbol:   variable VUtil
+  location: class Renderer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:452: error: cannot find symbol
+            vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+                                                                            ^
+  symbol:   variable VUtil
+  location: class Renderer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:564: error: cannot find symbol
+            vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
+                                                                            ^
+  symbol:   variable VUtil
+  location: class Renderer
+Note: Recompile with -Xlint:unchecked for details.
+Note: Some input files use or override a deprecated API.
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:41: error: method does not override or implement a method from a supertype
+    @Override
+    ^
+Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+Note: Some input files use unchecked or unsafe operations.
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/texture/ASTCTextureLoader.java:14: error: cannot find symbol
+        VkPhysicalDeviceFeatures features = DeviceManager.getPhysicalDeviceFeatures();
+                                                         ^
+  symbol:   method getPhysicalDeviceFeatures()
+  location: class DeviceManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:50: error: cannot find symbol
+        MemoryManager.getInstance().addBuffer(buffer);
+                                   ^
+  symbol:   method addBuffer(Buffer)
+  location: class MemoryManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:15: error: cannot find symbol
+        if (image.getMipLevels() <= 1) return;
+                 ^
+  symbol:   method getMipLevels()
+  location: variable image of type VulkanImage
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:17: error: cannot find symbol
+        try (MemoryStack stack = stackPush()) {
+                                 ^
+  symbol:   method stackPush()
+  location: class GPUMipmapGenerator
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:39: error: cannot find symbol
+            int mipWidth = image.getWidth();
+                                ^
+  symbol:   method getWidth()
+  location: variable image of type VulkanImage
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:40: error: cannot find symbol
+            int mipHeight = image.getHeight();
+                                 ^
+  symbol:   method getHeight()
+  location: variable image of type VulkanImage
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:42: error: cannot find symbol
+            for (int i = 1; i < image.getMipLevels(); i++) {
+                                     ^
+  symbol:   method getMipLevels()
+  location: variable image of type VulkanImage
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:82: error: cannot find symbol
+            barrier.subresourceRange().baseMipLevel(image.getMipLevels() - 1);
+                                                         ^
+  symbol:   method getMipLevels()
+  location: variable image of type VulkanImage
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:27: error: cannot find symbol
+        MemoryManager.getInstance().addBuffer(this);
+                                   ^
+  symbol:   method addBuffer(PersistentMappedBuffer)
+  location: class MemoryManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:65: error: cannot find symbol
+            vkWaitSemaphores(Vulkan.getVkDevice(), waitInfo, timeoutNs);
+            ^
+  symbol:   method vkWaitSemaphores(VkDevice,VkSemaphoreWaitInfo,long)
+  location: class TimelineSemaphoreManager
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:236: error: cannot find symbol
+            recreateSwapChain();
+            ^
+  symbol:   method recreateSwapChain()
+  location: class Renderer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:378: error: cannot find symbol
+            submitInfo.pSignalSemaphoreValues(stack.longs(0, TimelineSemaphoreManager.getNextValue()));
+                      ^
+  symbol:   method pSignalSemaphoreValues(LongBuffer)
+  location: variable submitInfo of type VkSubmitInfo
+35 errors
+	at org.gradle.api.internal.tasks.compile.JdkJavaCompiler.execute(JdkJavaCompiler.java:89)
+	at org.gradle.api.internal.tasks.compile.JdkJavaCompiler.execute(JdkJavaCompiler.java:50)
+	at org.gradle.api.internal.tasks.compile.NormalizingJavaCompiler.delegateAndHandleErrors(NormalizingJavaCompiler.java:98)
+	at org.gradle.api.internal.tasks.compile.NormalizingJavaCompiler.execute(NormalizingJavaCompiler.java:52)
+	at org.gradle.api.internal.tasks.compile.NormalizingJavaCompiler.execute(NormalizingJavaCompiler.java:38)
+	at org.gradle.api.internal.tasks.compile.AnnotationProcessorDiscoveringCompiler.execute(AnnotationProcessorDiscoveringCompiler.java:52)
+	at org.gradle.api.internal.tasks.compile.AnnotationProcessorDiscoveringCompiler.execute(AnnotationProcessorDiscoveringCompiler.java:38)
+	at org.gradle.api.internal.tasks.compile.ModuleApplicationNameWritingCompiler.execute(ModuleApplicationNameWritingCompiler.java:46)
+	at org.gradle.api.internal.tasks.compile.ModuleApplicationNameWritingCompiler.execute(ModuleApplicationNameWritingCompiler.java:36)
+	at org.gradle.jvm.toolchain.internal.DefaultToolchainJavaCompiler.execute(DefaultToolchainJavaCompiler.java:57)
+	at org.gradle.api.tasks.compile.JavaCompile.lambda$createToolchainCompiler$3(JavaCompile.java:206)
+	at org.gradle.api.internal.tasks.compile.CleaningJavaCompiler.execute(CleaningJavaCompiler.java:53)
+	at org.gradle.api.internal.tasks.compile.incremental.IncrementalCompilerFactory.lambda$createRebuildAllCompiler$0(IncrementalCompilerFactory.java:55)
+	at org.gradle.api.internal.tasks.compile.incremental.SelectiveCompiler.execute(SelectiveCompiler.java:70)
+	at org.gradle.api.internal.tasks.compile.incremental.SelectiveCompiler.execute(SelectiveCompiler.java:44)
+	at org.gradle.api.internal.tasks.compile.incremental.IncrementalResultStoringCompiler.execute(IncrementalResultStoringCompiler.java:66)
+	at org.gradle.api.internal.tasks.compile.incremental.IncrementalResultStoringCompiler.execute(IncrementalResultStoringCompiler.java:52)
+	at org.gradle.api.internal.tasks.compile.CompileJavaBuildOperationReportingCompiler$1.call(CompileJavaBuildOperationReportingCompiler.java:64)
+	at org.gradle.api.internal.tasks.compile.CompileJavaBuildOperationReportingCompiler$1.call(CompileJavaBuildOperationReportingCompiler.java:48)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.compile.CompileJavaBuildOperationReportingCompiler.execute(CompileJavaBuildOperationReportingCompiler.java:48)
+	at org.gradle.api.tasks.compile.JavaCompile.performCompilation(JavaCompile.java:224)
+	at org.gradle.api.tasks.compile.JavaCompile.performIncrementalCompilation(JavaCompile.java:165)
+	at org.gradle.api.tasks.compile.JavaCompile.compile(JavaCompile.java:150)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:125)
+	at org.gradle.api.internal.project.taskfactory.IncrementalTaskAction.doExecute(IncrementalTaskAction.java:45)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:51)
+	at org.gradle.api.internal.project.taskfactory.IncrementalTaskAction.execute(IncrementalTaskAction.java:26)
+	at org.gradle.api.internal.project.taskfactory.StandardTaskAction.execute(StandardTaskAction.java:29)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$3.run(TaskExecution.java:244)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:30)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$1.execute(DefaultBuildOperationRunner.java:27)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.run(DefaultBuildOperationRunner.java:48)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeAction(TaskExecution.java:229)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeActions(TaskExecution.java:212)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.executeWithPreviousOutputFiles(TaskExecution.java:195)
+	at org.gradle.api.internal.tasks.execution.TaskExecution.execute(TaskExecution.java:162)
+	at org.gradle.internal.execution.steps.ExecuteStep.executeInternal(ExecuteStep.java:105)
+	at org.gradle.internal.execution.steps.ExecuteStep.access$000(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:59)
+	at org.gradle.internal.execution.steps.ExecuteStep$1.call(ExecuteStep.java:56)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:56)
+	at org.gradle.internal.execution.steps.ExecuteStep.execute(ExecuteStep.java:44)
+	at org.gradle.internal.execution.steps.CancelExecutionStep.execute(CancelExecutionStep.java:42)
+	at org.gradle.internal.execution.steps.TimeoutStep.executeWithoutTimeout(TimeoutStep.java:75)
+	at org.gradle.internal.execution.steps.TimeoutStep.execute(TimeoutStep.java:55)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:50)
+	at org.gradle.internal.execution.steps.PreCreateOutputParentsStep.execute(PreCreateOutputParentsStep.java:28)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:67)
+	at org.gradle.internal.execution.steps.RemovePreviousOutputsStep.execute(RemovePreviousOutputsStep.java:37)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:61)
+	at org.gradle.internal.execution.steps.BroadcastChangingOutputsStep.execute(BroadcastChangingOutputsStep.java:26)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:69)
+	at org.gradle.internal.execution.steps.CaptureOutputsAfterExecutionStep.execute(CaptureOutputsAfterExecutionStep.java:46)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:40)
+	at org.gradle.internal.execution.steps.ResolveInputChangesStep.execute(ResolveInputChangesStep.java:29)
+	at org.gradle.internal.execution.steps.BuildCacheStep.executeWithoutCache(BuildCacheStep.java:189)
+	at org.gradle.internal.execution.steps.BuildCacheStep.lambda$execute$1(BuildCacheStep.java:75)
+	at org.gradle.internal.Either$Right.fold(Either.java:175)
+	at org.gradle.internal.execution.caching.CachingState.fold(CachingState.java:62)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:73)
+	at org.gradle.internal.execution.steps.BuildCacheStep.execute(BuildCacheStep.java:48)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:46)
+	at org.gradle.internal.execution.steps.StoreExecutionStateStep.execute(StoreExecutionStateStep.java:35)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.executeBecause(SkipUpToDateStep.java:75)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.lambda$execute$2(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:53)
+	at org.gradle.internal.execution.steps.SkipUpToDateStep.execute(SkipUpToDateStep.java:35)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:37)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsFinishedStep.execute(MarkSnapshottingInputsFinishedStep.java:27)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:49)
+	at org.gradle.internal.execution.steps.ResolveIncrementalCachingStateStep.executeDelegate(ResolveIncrementalCachingStateStep.java:27)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:71)
+	at org.gradle.internal.execution.steps.AbstractResolveCachingStateStep.execute(AbstractResolveCachingStateStep.java:39)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:65)
+	at org.gradle.internal.execution.steps.ResolveChangesStep.execute(ResolveChangesStep.java:36)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:107)
+	at org.gradle.internal.execution.steps.ValidateStep.execute(ValidateStep.java:56)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:64)
+	at org.gradle.internal.execution.steps.AbstractCaptureStateBeforeExecutionStep.execute(AbstractCaptureStateBeforeExecutionStep.java:43)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.executeWithNonEmptySources(AbstractSkipEmptyWorkStep.java:125)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:61)
+	at org.gradle.internal.execution.steps.AbstractSkipEmptyWorkStep.execute(AbstractSkipEmptyWorkStep.java:36)
+	at org.gradle.internal.execution.steps.legacy.MarkSnapshottingInputsStartedStep.execute(MarkSnapshottingInputsStartedStep.java:38)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:36)
+	at org.gradle.internal.execution.steps.LoadPreviousExecutionStateStep.execute(LoadPreviousExecutionStateStep.java:23)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:75)
+	at org.gradle.internal.execution.steps.HandleStaleOutputsStep.execute(HandleStaleOutputsStep.java:41)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.lambda$execute$0(AssignMutableWorkspaceStep.java:35)
+	at org.gradle.api.internal.tasks.execution.TaskExecution$4.withWorkspace(TaskExecution.java:289)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:31)
+	at org.gradle.internal.execution.steps.AssignMutableWorkspaceStep.execute(AssignMutableWorkspaceStep.java:22)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:40)
+	at org.gradle.internal.execution.steps.ChoosePipelineStep.execute(ChoosePipelineStep.java:23)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.lambda$execute$2(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:67)
+	at org.gradle.internal.execution.steps.ExecuteWorkBuildOperationFiringStep.execute(ExecuteWorkBuildOperationFiringStep.java:39)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:46)
+	at org.gradle.internal.execution.steps.IdentityCacheStep.execute(IdentityCacheStep.java:34)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:48)
+	at org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:35)
+	at org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:64)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:127)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:116)
+	at org.gradle.api.internal.tasks.execution.ProblemsTaskPathTrackingTaskExecuter.execute(ProblemsTaskPathTrackingTaskExecuter.java:41)
+	at org.gradle.api.internal.tasks.execution.FinalizePropertiesTaskExecuter.execute(FinalizePropertiesTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.ResolveTaskExecutionModeExecuter.execute(ResolveTaskExecutionModeExecuter.java:51)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:57)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:74)
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.executeTask(EventFiringTaskExecuter.java:77)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:55)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter$1.call(EventFiringTaskExecuter.java:52)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.api.internal.tasks.execution.EventFiringTaskExecuter.execute(EventFiringTaskExecuter.java:52)
+	at org.gradle.execution.plan.LocalTaskNodeExecutor.execute(LocalTaskNodeExecutor.java:42)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:331)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$InvokeNodeExecutorsAction.execute(DefaultTaskExecutionGraph.java:318)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.lambda$execute$0(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:314)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph$BuildOperationAwareExecutionAction.execute(DefaultTaskExecutionGraph.java:303)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.execute(DefaultPlanExecutor.java:459)
+	at org.gradle.execution.plan.DefaultPlanExecutor$ExecutorWorker.run(DefaultPlanExecutor.java:376)
+	at org.gradle.execution.plan.DefaultPlanExecutor.process(DefaultPlanExecutor.java:111)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.executeWithServices(DefaultTaskExecutionGraph.java:138)
+	at org.gradle.execution.taskgraph.DefaultTaskExecutionGraph.execute(DefaultTaskExecutionGraph.java:123)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:35)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:51)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor$ExecuteTasks.call(BuildOperationFiringBuildWorkerExecutor.java:43)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:210)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$CallableBuildOperationWorker.execute(DefaultBuildOperationRunner.java:205)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:67)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner$2.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:167)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.execute(DefaultBuildOperationRunner.java:60)
+	at org.gradle.internal.operations.DefaultBuildOperationRunner.call(DefaultBuildOperationRunner.java:54)
+	at org.gradle.execution.BuildOperationFiringBuildWorkerExecutor.execute(BuildOperationFiringBuildWorkerExecutor.java:40)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.lambda$executeTasks$10(DefaultBuildLifecycleController.java:313)
+	at org.gradle.internal.model.StateTransitionController.doTransition(StateTransitionController.java:266)
+	at org.gradle.internal.model.StateTransitionController.lambda$tryTransition$8(StateTransitionController.java:177)
+	at org.gradle.internal.work.DefaultSynchronizer.withLock(DefaultSynchronizer.java:46)
+	at org.gradle.internal.model.StateTransitionController.tryTransition(StateTransitionController.java:177)
+	at org.gradle.internal.build.DefaultBuildLifecycleController.executeTasks(DefaultBuildLifecycleController.java:304)
+	at org.gradle.internal.build.DefaultBuildWorkGraphController$DefaultBuildWorkGraph.runWork(DefaultBuildWorkGraphController.java:220)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.withLocks(DefaultWorkerLeaseService.java:263)
+	at org.gradle.internal.work.DefaultWorkerLeaseService.runAsWorkerThread(DefaultWorkerLeaseService.java:127)
+	at org.gradle.composite.internal.DefaultBuildController.doRun(DefaultBuildController.java:181)
+	at org.gradle.composite.internal.DefaultBuildController.access$000(DefaultBuildController.java:50)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.lambda$run$0(DefaultBuildController.java:198)
+	at org.gradle.internal.operations.CurrentBuildOperationRef.with(CurrentBuildOperationRef.java:85)
+	at org.gradle.composite.internal.DefaultBuildController$BuildOpRunnable.run(DefaultBuildController.java:198)
+	at org.gradle.internal.concurrent.ExecutorPolicy$CatchAndRecordFailures.onExecute(ExecutorPolicy.java:64)
+	at org.gradle.internal.concurrent.AbstractManagedExecutor$1.run(AbstractManagedExecutor.java:48)
+
+
+BUILD FAILED in 14s
+3 actionable tasks: 3 executed
+Some of the file system contents retained in the virtual file system are on file systems that Gradle doesn't support watching. The relevant state was discarded to ensure changes to these locations are properly detected. You can override this by explicitly enabling file system watching.

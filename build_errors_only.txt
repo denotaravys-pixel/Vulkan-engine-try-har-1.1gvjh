@@ -1,0 +1,114 @@
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/texture/ASTCTextureLoader.java:14: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:102: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:104: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:46: error: constructor Buffer in class Buffer cannot be applied to given types;
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:50: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:15: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:17: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:39: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:40: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:42: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:50: error: incompatible types: long cannot be converted to VkCommandBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:62: error: incompatible types: long cannot be converted to VkCommandBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:73: error: incompatible types: long cannot be converted to VkCommandBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:82: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:88: error: incompatible types: long cannot be converted to VkCommandBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:20: error: constructor Buffer in class Buffer cannot be applied to given types;
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:27: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:41: error: method does not override or implement a method from a supertype
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:47: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:35: error: method initialDataSize in class VkPipelineCacheCreateInfo cannot be applied to given types;
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:36: error: incompatible types: long cannot be converted to ByteBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:42: error: no suitable method found for vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,<null>,PointerBuffer)
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:64: error: incompatible types: long cannot be converted to ByteBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:21: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:22: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:60: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:65: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:236: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:265: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:281: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:378: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:452: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:564: error: cannot find symbol
+> Task :compileJava FAILED
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:46: error: constructor Buffer in class Buffer cannot be applied to given types;
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:20: error: constructor Buffer in class Buffer cannot be applied to given types;
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:35: error: method initialDataSize in class VkPipelineCacheCreateInfo cannot be applied to given types;
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:42: error: no suitable method found for vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,<null>,PointerBuffer)
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:47: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:50: error: incompatible types: long cannot be converted to VkCommandBuffer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:62: error: incompatible types: long cannot be converted to VkCommandBuffer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:73: error: incompatible types: long cannot be converted to VkCommandBuffer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:88: error: incompatible types: long cannot be converted to VkCommandBuffer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:36: error: incompatible types: long cannot be converted to ByteBuffer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:64: error: incompatible types: long cannot be converted to ByteBuffer
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:102: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:104: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:21: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:22: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:60: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:265: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:281: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:452: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:564: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:41: error: method does not override or implement a method from a supertype
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/texture/ASTCTextureLoader.java:14: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:50: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:15: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:17: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:39: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:40: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:42: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:82: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:27: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:65: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:236: error: cannot find symbol
+  /workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:378: error: cannot find symbol
+* Exception is:
+org.gradle.api.tasks.TaskExecutionException: Execution failed for task ':compileJava'.
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+Caused by: org.gradle.api.internal.tasks.compile.CompilationFailedException: Compilation failed; see the compiler output below.
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:46: error: constructor Buffer in class Buffer cannot be applied to given types;
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:20: error: constructor Buffer in class Buffer cannot be applied to given types;
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:35: error: method initialDataSize in class VkPipelineCacheCreateInfo cannot be applied to given types;
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:42: error: no suitable method found for vkCreatePipelineCache(VkDevice,VkPipelineCacheCreateInfo,<null>,PointerBuffer)
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:47: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:50: error: incompatible types: long cannot be converted to VkCommandBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:62: error: incompatible types: long cannot be converted to VkCommandBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:73: error: incompatible types: long cannot be converted to VkCommandBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:88: error: incompatible types: long cannot be converted to VkCommandBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:36: error: incompatible types: long cannot be converted to ByteBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/cache/PipelineCacheManager.java:64: error: incompatible types: long cannot be converted to ByteBuffer
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:102: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/GLESBackend.java:104: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/gl/VkGlFramebuffer.java:226: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:21: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:22: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:60: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:265: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:281: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:452: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:564: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:41: error: method does not override or implement a method from a supertype
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/backend/texture/ASTCTextureLoader.java:14: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/render/compute/ComputeLighting.java:50: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:15: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:17: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:39: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:40: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:42: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/texture/GPUMipmapGenerator.java:82: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/memory/buffer/PersistentMappedBuffer.java:27: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/sync/TimelineSemaphoreManager.java:65: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:236: error: cannot find symbol
+/workspaces/Vulkan-engine-try-har-1.1/src/main/java/net/vulkanmod/vulkan/Renderer.java:378: error: cannot find symbol
+	at org.gradle.api.internal.tasks.execution.CatchExceptionTaskExecuter.execute(CatchExceptionTaskExecuter.java:36)
+BUILD FAILED in 14s
+=== TOTAL ERROS ===
+105

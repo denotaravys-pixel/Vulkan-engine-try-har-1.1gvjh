@@ -58,8 +58,6 @@ dependencies {
 		include(runtimeOnly("$name:$lwjglVersion:$macosArmNatives"))
 	}
 
-	includeNatives("org.lwjgl:lwjgl-shaderc")
-
 	//MoltenVK
 	include(runtimeOnly("org.lwjgl:lwjgl-vulkan:$lwjglVersion:$macosNatives"))
 	include(runtimeOnly("org.lwjgl:lwjgl-vulkan:$lwjglVersion:$macosArmNatives"))
