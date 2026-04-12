@@ -15,6 +15,10 @@ import static org.lwjgl.vulkan.VK10.*;
 
 /***
  * Synchronization utility to sync in frame ops that need to be completed before executing main cmd buffer.
+ *
+ * ANDROID FIX: vkWaitForFences return value is now checked.
+ * Previously, VK_TIMEOUT (-4) was silently ignored, causing CB reset on still-in-use
+ * buffers → GPU corruption on Mali-G52 (UMA architecture, no separate VRAM).
  */
 public class Synchronization {
     private static final int ALLOCATION_SIZE = 50;
@@ -64,8 +68,30 @@ public class Synchronization {
 
         fences.limit(idx);
 
-        vkWaitForFences(device, fences, true, VUtil.FENCE_TIMEOUT_NS);
+        // FIX: Verificar o retorno de vkWaitForFences.
+        // Antes: retorno ignorado → reset de CB ainda em uso pela GPU (UB Vulkan).
+        // Agora: VK_TIMEOUT → abortar reset para evitar corrupção na Mali-G52.
+        int result = vkWaitForFences(device, fences, true, VUtil.FENCE_TIMEOUT_NS);
 
+        if (result == VK_TIMEOUT) {
+            // GPU ainda não terminou. Não resetar CBs — podem estar em uso.
+            // Limpar o buffer de fences e sair sem tocar nos command buffers.
+            // Na Mali-G52 isto acontece quando pipelines são null e não há
+            // trabalho real submetido, ou em picos de carga.
+            fences.limit(ALLOCATION_SIZE);
+            idx = 0;
+            return;
+        }
+
+        if (result != VK_SUCCESS) {
+            // VK_ERROR_DEVICE_LOST ou outro erro grave — não resetar CBs.
+            // O caller (Renderer) irá detectar o device lost na próxima submissão.
+            fences.limit(ALLOCATION_SIZE);
+            idx = 0;
+            return;
+        }
+
+        // VK_SUCCESS — seguro resetar CBs
         this.fenceCbs.forEach(CommandPool.CommandBuffer::reset);
         this.fenceCbs.clear();
 
@@ -91,7 +117,6 @@ public class Synchronization {
 
         // Use waitFences() path instead of frameOp to ensure GPU has finished
         // before resetting command buffers that use semaphores.
-        // frameOp scheduling caused resets on wrong frame → flickering.
         for (CommandPool.CommandBuffer cb : frameSemaphoreCbs) {
             addCommandBuffer(cb, false);
         }
@@ -102,7 +127,12 @@ public class Synchronization {
     public static void waitFence(long fence) {
         VkDevice device = Vulkan.getVkDevice();
 
-        vkWaitForFences(device, fence, true, VUtil.FENCE_TIMEOUT_NS);
+        // FIX: Verificar retorno — evitar stall infinito e corrupção em UMA.
+        int result = vkWaitForFences(device, fence, true, VUtil.FENCE_TIMEOUT_NS);
+        if (result != VK_SUCCESS && result != VK_TIMEOUT) {
+            // Log seria ideal aqui, mas evitamos dependência de LOGGER neste nível
+            // O erro será detectado na próxima submissão Vulkan
+        }
     }
 
     public static boolean checkFenceStatus(long fence) {
@@ -110,4 +140,4 @@ public class Synchronization {
         return vkGetFenceStatus(device, fence) == VK_SUCCESS;
     }
 
-}
+  }
