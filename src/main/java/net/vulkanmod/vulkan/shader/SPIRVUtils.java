@@ -9,13 +9,21 @@ public class SPIRVUtils {
 
     public static final boolean IS_ANDROID;
     static {
-        boolean a = false;
-        try {
-            Class.forName("android.os.Build");
-            a = true;
-        } catch (ClassNotFoundException ignored) {
-        }
+        // Class.forName falha no Knot classloader — usar system properties
+        // Zalith/PojavLauncher define -Dos.version=Android-XX e POJAV_RENDERER
+        String osVersion = System.getProperty("os.version", "");
+        String pojav     = System.getProperty("pojav.path.minecraft", "");
+        String renderer  = System.getenv("POJAV_RENDERER") != null
+                           ? System.getenv("POJAV_RENDERER") : "";
+        boolean a = osVersion.contains("Android")
+                     || pojav.contains("pojav")
+                     || renderer.contains("vulkan_zink")
+                     || renderer.contains("vulkan");
         IS_ANDROID = a;
+        System.err.println("[VULKANMOD] IS_ANDROID=" + IS_ANDROID
+                           + " os.version=" + osVersion
+                           + " pojav=" + (!pojav.isEmpty())
+                           + " renderer=" + renderer);
     }
 
     public enum ShaderKind {
