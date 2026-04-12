@@ -3,16 +3,18 @@ name: VulkanMod Android ARM64
 on:
   push:
     branches: [android-arm64]
+  pull_request:
+    branches: [android-arm64]
   workflow_dispatch:
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
   build-android:
     runs-on: ubuntu-22.04
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -28,7 +30,7 @@ jobs:
       - name: Install shader tools
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y glslang-tools spirv-tools
+          sudo apt-get install -y glslang-tools spirv-tools spirv-cross
           glslc --version
           spirv-val --version
 
@@ -52,8 +54,9 @@ jobs:
           for spv in "$OUT"/*.spv; do
             [ -f "$spv" ] || continue
             spirv-val --target-env vulkan1.1 "$spv" \
-              && echo "VALID: $spv" || echo "INVALID: $spv"
+              && echo "✅ VALID: $spv" || echo "❌ INVALID: $spv" && FAIL=1
           done
+          exit $FAIL
 
       - name: Read version
         id: ver
@@ -65,40 +68,41 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build --no-daemon --stacktrace
-          env:
-            JAVA_TOOL_OPTIONS: "-Xmx4g"
+        env:
+          JAVA_TOOL_OPTIONS: "-Xmx4g"
 
       - name: Find JAR
         id: jar
         run: |
-          J=$(find build/libs/ -name "*.jar" \
-            ! -name "*-sources*" ! -name "*-dev*" | head -1)
+          J=$(find build/libs/ -name "*.jar" ! -name "*-sources*" ! -name "*-dev*" | head -1)
           echo "path=$J" >> $GITHUB_OUTPUT
           echo "name=$(basename $J)" >> $GITHUB_OUTPUT
 
-      - name: Release (LATEST)
+      - name: Release (Push)
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: android-arm64-${{ github.run_number }}
           name: "Android ARM64 Build #${{ github.run_number }}"
           body: |
-            Mali-G52 | Vulkan 1.1 | MC ${{ steps.ver.outputs.v }}
-            Commit: ${{ github.sha }}
-            No shaderc | Direct draw | INHERIT composite alpha
+            🎮 **Mali-G52 | Vulkan 1.1 | MC ${{ steps.ver.outputs.v }}**
+            💾 Commit: ${{ github.sha }}
+            🔧 No shaderc | Direct draw | INHERIT alpha
           files: ${{ steps.jar.outputs.path }}
           make_latest: true
           target_commitish: android-arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    runs-on: ubuntu-latest
+
+  pr-comment:
+    needs: build-android
     if: github.event_name == 'pull_request'
-    permissions:
-      pull-requests: write
+    runs-on: ubuntu-latest
     steps:
       - name: Comment PR success
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
             ✅ **Build Android ARM64 PASSOU!**
-            📱 [Download JAR](${{ needs.build.outputs.artifact_url }})
+            📱 [Download JAR](https://github.com/${{ github.repository }}/releases/tag/android-arm64-${{ github.run_number }})
             🚀 Merge para liberar VulkanMod Android oficial!
