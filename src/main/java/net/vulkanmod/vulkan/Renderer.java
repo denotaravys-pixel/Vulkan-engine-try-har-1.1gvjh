@@ -549,7 +549,8 @@ public class Renderer {
             vkQueueSubmit(DeviceManager.getGraphicsQueue().vkQueue(), info, inFlightFences.get(currentFrame));
             vkWaitForFences(device, inFlightFences.get(currentFrame), true, VUtil.FENCE_TIMEOUT_NS);
         }
-            }
+    }
+
     @SuppressWarnings("UnreachableCode")
     private void recreateSwapChain() {
         submitUploads();
@@ -885,4 +886,3 @@ public class Renderer {
     public static void scheduleSwapChainUpdate() {
         swapChainUpdate = true;
     }
-                        }
