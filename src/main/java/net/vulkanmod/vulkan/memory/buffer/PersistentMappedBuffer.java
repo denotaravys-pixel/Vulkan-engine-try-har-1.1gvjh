@@ -5,20 +5,24 @@ import net.vulkanmod.vulkan.memory.MemoryManager;
 import net.vulkanmod.vulkan.memory.MemoryTypes;
 import org.lwjgl.PointerBuffer;
 import org.lwjgl.system.MemoryUtil;
-import org.lwjgl.vulkan.VkBufferCreateInfo;
 
 import java.nio.ByteBuffer;
 
-import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.vulkan.VK10.*;
 
+// FIX: construtor Buffer(int usage, MemoryType type) — ordem e tipos corrigidos
+// FIX: super.free() removido — Buffer não tem free(), usar scheduleFree()
 public class PersistentMappedBuffer extends Buffer {
 
     private PointerBuffer mappedMemory;
 
     public PersistentMappedBuffer(long size, int usage) {
-        super(size, usage | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
-              VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT | VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+        // Buffer(int usage, MemoryType type) — ordem correcta
+        super(usage | VK_BUFFER_USAGE_TRANSFER_DST_BIT,
+              MemoryTypes.HostCoherentMemory);
+
+        // Criar o buffer com o tamanho especificado
+        this.createBuffer(size);
 
         // Map the memory persistently
         mappedMemory = MemoryUtil.memAllocPointer(1);
@@ -39,11 +43,12 @@ public class PersistentMappedBuffer extends Buffer {
     }
 
     @Override
-    public void free() {
+    public void scheduleFree() {
         if (mappedMemory != null) {
             vkUnmapMemory(Vulkan.getVkDevice(), allocation);
             MemoryUtil.memFree(mappedMemory);
+            mappedMemory = null;
         }
-        super.free();
+        super.scheduleFree();
     }
 }
