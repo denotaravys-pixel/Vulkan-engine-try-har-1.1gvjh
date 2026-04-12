@@ -99,29 +99,62 @@ public class SPIRVUtils {
         return loadSPV(name, null);
     }
 
+    // -------------------------------------------------------------------------
+    // loadSPV — corrigido para estrutura real de subdirectórios do JAR
+    //
+    // Estrutura confirmada por: jar tf VulkanMod-Android-ARM64-v1.0.jar | grep .spv
+    //   assets/vulkanmod/shaders/basic/{name}/{name}.vert.spv
+    //   assets/vulkanmod/shaders/basic/{name}/{name}.frag.spv
+    //   assets/vulkanmod/shaders/core/{name}/{name}.vert.spv
+    //   assets/vulkanmod/shaders/post/{name}/{name}.vert.spv
+    //
+    // Ordem: subdirectório {basic,core,post} primeiro, depois fallback plano
+    // -------------------------------------------------------------------------
     public static ByteBuffer loadSPV(String name, ShaderKind kind) {
         System.err.println("[VULKANMOD] loadSPV: name=" + name + " kind=" + kind);
 
+        // Normalizar: remover extensão GLSL e extrair só o nome base (sem path)
         String base = name.replaceAll("\\.(vsh|fsh|vert|frag|comp|geom|tesc|tese|glsl)$", "");
+        int lastSlash = Math.max(base.lastIndexOf('/'), base.lastIndexOf('\\'));
+        if (lastSlash >= 0) base = base.substring(lastSlash + 1);
+
         java.util.List<String> paths = new java.util.ArrayList<>();
+        String[] categories = {"basic", "core", "post"};
 
         if (kind == ShaderKind.VERTEX_SHADER) {
-            paths.add("/assets/vulkanmod/shaders/" + base + ".vsh.spv");
+            // Estrutura subdirectório (real do JAR)
+            for (String cat : categories) {
+                paths.add("/assets/vulkanmod/shaders/" + cat + "/" + base + "/" + base + ".vert.spv");
+                paths.add("/assets/vulkanmod/shaders/" + cat + "/" + base + "/" + base + ".vsh.spv");
+            }
+            // Fallback plano
             paths.add("/assets/vulkanmod/shaders/" + base + ".vert.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".vsh.spv");
             paths.add("/assets/vulkanmod/shaders/" + base + ".spv");
-            paths.add("/assets/vulkanmod/shaders/" + name + ".spv");
+
         } else if (kind == ShaderKind.FRAGMENT_SHADER) {
-            paths.add("/assets/vulkanmod/shaders/" + base + ".fsh.spv");
+            // Estrutura subdirectório (real do JAR)
+            for (String cat : categories) {
+                paths.add("/assets/vulkanmod/shaders/" + cat + "/" + base + "/" + base + ".frag.spv");
+                paths.add("/assets/vulkanmod/shaders/" + cat + "/" + base + "/" + base + ".fsh.spv");
+            }
+            // Fallback plano
             paths.add("/assets/vulkanmod/shaders/" + base + ".frag.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".fsh.spv");
             paths.add("/assets/vulkanmod/shaders/" + base + ".spv");
-            paths.add("/assets/vulkanmod/shaders/" + name + ".spv");
+
         } else {
-            paths.add("/assets/vulkanmod/shaders/" + name + ".spv");
-            paths.add("/assets/vulkanmod/shaders/" + base + ".vsh.spv");
-            paths.add("/assets/vulkanmod/shaders/" + base + ".vert.spv");
-            paths.add("/assets/vulkanmod/shaders/" + base + ".fsh.spv");
-            paths.add("/assets/vulkanmod/shaders/" + base + ".frag.spv");
+            // kind null ou outro: tenta tudo
+            for (String cat : categories) {
+                paths.add("/assets/vulkanmod/shaders/" + cat + "/" + base + "/" + base + ".vert.spv");
+                paths.add("/assets/vulkanmod/shaders/" + cat + "/" + base + "/" + base + ".frag.spv");
+                paths.add("/assets/vulkanmod/shaders/" + cat + "/" + base + "/" + base + ".comp.spv");
+            }
             paths.add("/assets/vulkanmod/shaders/" + base + ".spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".vert.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".vsh.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".frag.spv");
+            paths.add("/assets/vulkanmod/shaders/" + base + ".fsh.spv");
         }
 
         for (String path : paths) {
@@ -137,9 +170,27 @@ public class SPIRVUtils {
         return null;
     }
 
+    // -------------------------------------------------------------------------
+    // tryLoad — tenta dois classloaders
+    // A: SPIRVUtils.class (path com leading /)
+    // B: Thread context classloader do Knot (path sem leading /)
+    // -------------------------------------------------------------------------
     private static ByteBuffer tryLoad(String path) {
-        try (InputStream is = SPIRVUtils.class.getResourceAsStream(path)) {
-            if (is == null) return null;
+        // Tentativa A: classloader da classe
+        InputStream is = SPIRVUtils.class.getResourceAsStream(path);
+
+        // Tentativa B: context classloader do Fabric Knot
+        if (is == null) {
+            String relative = path.startsWith("/") ? path.substring(1) : path;
+            ClassLoader ctx = Thread.currentThread().getContextClassLoader();
+            if (ctx != null) {
+                is = ctx.getResourceAsStream(relative);
+            }
+        }
+
+        if (is == null) return null;
+
+        try {
             byte[] b = is.readAllBytes();
             if (b.length < 4) return null;
             int magic = (b[0] & 0xFF) | ((b[1] & 0xFF) << 8) | ((b[2] & 0xFF) << 16) | ((b[3] & 0xFF) << 24);
@@ -152,17 +203,27 @@ public class SPIRVUtils {
             return buf;
         } catch (IOException e) {
             return null;
+        } finally {
+            try { is.close(); } catch (IOException ignored) {}
         }
     }
 
+    // -------------------------------------------------------------------------
+    // listAvailableSPVs — diagnóstico com paths reais do JAR
+    // -------------------------------------------------------------------------
     public static void listAvailableSPVs() {
         String[] check = {
-            "/assets/vulkanmod/shaders/terrain.vsh.spv",
-            "/assets/vulkanmod/shaders/terrain.fsh.spv",
-            "/assets/vulkanmod/shaders/basic.vsh.spv",
-            "/assets/vulkanmod/shaders/basic.fsh.spv",
-            "/assets/vulkanmod/shaders/position.vsh.spv",
-            "/assets/vulkanmod/shaders/position.fsh.spv",
+            "/assets/vulkanmod/shaders/basic/terrain/terrain.vert.spv",
+            "/assets/vulkanmod/shaders/basic/terrain/terrain.frag.spv",
+            "/assets/vulkanmod/shaders/basic/terrain_earlyz/terrain_earlyz.vert.spv",
+            "/assets/vulkanmod/shaders/basic/terrain_earlyz/terrain_earlyz.frag.spv",
+            "/assets/vulkanmod/shaders/basic/blit/blit.vert.spv",
+            "/assets/vulkanmod/shaders/basic/blit/blit.frag.spv",
+            "/assets/vulkanmod/shaders/basic/clouds/clouds.vert.spv",
+            "/assets/vulkanmod/shaders/basic/clouds/clouds.frag.spv",
+            "/assets/vulkanmod/shaders/core/screenquad/screenquad.vert.spv",
+            "/assets/vulkanmod/shaders/post/blit/blit.vert.spv",
+            "/assets/vulkanmod/shaders/post/blit/blur.vert.spv",
         };
         for (String p : check) {
             boolean ok = SPIRVUtils.class.getResourceAsStream(p) != null;
@@ -173,4 +234,4 @@ public class SPIRVUtils {
     public static void free(ByteBuffer buf) {
         if (buf != null) MemoryUtil.memFree(buf);
     }
-}
+                }
